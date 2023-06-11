@@ -1,6 +1,9 @@
-import { VSCodeDataGrid, VSCodeDataGridCell, VSCodeDataGridRow,  } from '@vscode/webview-ui-toolkit/react';
 import { useState, useEffect } from 'react';
 import { OcmResource } from '../../../src/data/loader'
+import { Card, CardBody, CardHeader, Gallery, GalleryItem, Title } from '@patternfly/react-core';
+import {  DateFormat } from '../common/common';
+import { Table, TableBody, TableHeader } from '@patternfly/react-table';
+import GalleryTableComponent from '../common/ConditionTable';
 
 export default function ShowManagedClusterSets() {
     let [managedClusterSets, setManagedClusterSets] = useState<OcmResource[]>([]);
@@ -13,27 +16,31 @@ export default function ShowManagedClusterSets() {
         });
     });
 
+
+
     return (
         <section className="component-row">
             { managedClusterSets.length > 0 &&
                 <>
-                    <h2 style={{ marginTop: '40px' }}>Managed Cluster Sets</h2>
-                    <VSCodeDataGrid gridTemplateColumns="1fr 1fr" aria-label='ManagedClusterSets' >
-                        <VSCodeDataGridRow rowType="sticky-header">
-                        <VSCodeDataGridCell cellType='columnheader' gridColumn='1'>Managed Cluster Set Name</VSCodeDataGridCell>
-                        <VSCodeDataGridCell cellType='columnheader' gridColumn='2'>Conditions</VSCodeDataGridCell>
-                    </VSCodeDataGridRow>
+                    <Title headingLevel='h2' size='md' style={{ marginTop: '40px' }}>Managed Cluster Sets</Title>
+                    <Gallery className='ocm-gallery' hasGutter={true} >
 
                     {managedClusterSets.map(managedClusterSet => {
-                        return <VSCodeDataGridRow>
-                                    <VSCodeDataGridCell gridColumn='1'>{managedClusterSet.kr.metadata.name}</VSCodeDataGridCell>
-                                    <VSCodeDataGridCell gridColumn='2'>{managedClusterSet.kr.status.conditions.map( ( condition:any )=> { return<p> - lastTransitionTime: {condition.lastTransitionTime}, message: {condition.message}, reason: {condition.reason}, status: {condition.status}, type: {condition.type} </p>  })} </VSCodeDataGridCell>
-                                </VSCodeDataGridRow>
-                    } )
-                    }
-                    </VSCodeDataGrid>
-                    <div style={{ borderTop: "1px solid #fff ", marginLeft: 10, marginRight: 10 }}></div>
-                </>
+                        const row = managedClusterSet.kr.status.conditions.map( (condition:any) => { 
+                            return [new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
+                                    condition.message,
+                                    condition.reason,
+                                    condition.status
+                                ]      
+                            })
+                        return  <GalleryTableComponent  
+                                    title={`ClusterSet Name: ${managedClusterSet.kr.metadata.name}`}
+                                    rows={row}
+                                />  
+                        } 
+                    )}
+                    </Gallery>    
+                    </>
             }
         </section>
     );

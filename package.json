@@ -183,6 +183,9 @@
 	},
 	"dependencies": {
 		"@kubernetes/client-node": "^0.17.1",
+		"@patternfly/react-core": "^4.276.8",
+		"@patternfly/react-styles": "^4.92.6",
+		"@patternfly/react-table": "^4.113.0",
 		"@types/lodash": "^4.14.185",
 		"@types/shelljs": "^0.8.11",
 		"@vscode/webview-ui-toolkit": "^1.0.1",

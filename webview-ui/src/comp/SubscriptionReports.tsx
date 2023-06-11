@@ -1,6 +1,7 @@
 import { VSCodeDataGrid, VSCodeDataGridCell, VSCodeDataGridRow,  } from '@vscode/webview-ui-toolkit/react';
 import { useState, useEffect } from 'react';
 import { OcmResource } from '../../../src/data/loader'
+import { Title } from '@patternfly/react-core';
 
 export default function ShowSubscriptionReports() {
     let [subscriptionReports, setSubscriptionReports] = useState<OcmResource[]>([]);
@@ -17,7 +18,7 @@ export default function ShowSubscriptionReports() {
         <section className="component-row">
             { subscriptionReports.length >0 &&
                 <>
-                    <h2 style={{ marginTop: '40px' }}>Subscription Report</h2>
+                    <Title headingLevel='h2' size='md' style={{ marginTop: '40px' }}>Subscription Report</Title>
                     <VSCodeDataGrid gridTemplateColumns="1fr 1fr 1fr 1fr" aria-label='SubscriptionReport' >
                         <VSCodeDataGridRow rowType="sticky-header">
                                 <VSCodeDataGridCell cellType='columnheader' gridColumn='1'>Subscription Name</VSCodeDataGridCell>

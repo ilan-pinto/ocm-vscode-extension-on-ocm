@@ -1,6 +1,7 @@
 import { VSCodeButton, VSCodeDataGrid, VSCodeDataGridCell, VSCodeDataGridRow,  } from '@vscode/webview-ui-toolkit/react';
 import { useState, useEffect } from 'react';
 import { OcmResource } from '../../../src/data/loader'
+import { Title } from '@patternfly/react-core';
 
 export default function ShowManifestWorks() {
     let [manifestWorks, setManifestWorks] = useState<OcmResource[]>([]);
@@ -12,6 +13,8 @@ export default function ShowManifestWorks() {
 
 	useEffect(() => {
         window.addEventListener("message", event => {
+            console.log("looking for ManifestWork")
+            console.log(event.data.crsDistribution.kind)
 			if ('crsDistribution' in event.data && 'ManifestWork' === event.data.crsDistribution.kind) {
 				let manifestWorks = JSON.parse(event.data.crsDistribution.crs);
 				manifestWorks.forEach((manifestWork: OcmResource) => updateShowMore(manifestWork.name, false));
@@ -20,11 +23,13 @@ export default function ShowManifestWorks() {
         });
     });
 
+    console.log(manifestWorks)
+
     return (
         <section className="component-row">
             { manifestWorks.length > 0 &&
                 <>
-                    <h2 style={{ marginTop: '40px' }}>ManifestWorks</h2>
+                    <Title headingLevel='h2' size='md' style={{ marginTop: '40px' }}>ManifestWorks</Title>
                     <VSCodeDataGrid gridTemplateColumns="1fr 1fr 1fr 1fr 1fr" aria-label='ManifestWorks' >
                         <VSCodeDataGridRow rowType="sticky-header">
                                 <VSCodeDataGridCell cellType='columnheader' gridColumn='1'>ManifestWork Name</VSCodeDataGridCell>

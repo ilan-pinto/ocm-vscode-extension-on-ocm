@@ -26,6 +26,6 @@ export function activate(extensionContext: vscode.ExtensionContext): void {
 			'ocm-vscode-extension.connectedContextsView.refresh', () => connectedContextsTreeProvider.refresh()),
 		vscode.commands.registerCommand(
 			'ocm-vscode-extension.showContextDetails',
-			(selectedContext: ConnectedContext) => ConnectedContextWebProvider.render(extensionContext.extensionUri, selectedContext))
+			(selectedContext: ConnectedContext) => ConnectedContextWebProvider.render(extensionContext.extensionUri, selectedContext,extensionContext))
 	);
 }

@@ -1,6 +1,7 @@
 import { VSCodeDataGrid, VSCodeDataGridCell, VSCodeDataGridRow,  } from '@vscode/webview-ui-toolkit/react';
 import { useState, useEffect } from 'react';
 import { OcmResource } from '../../../src/data/loader'
+import { Title } from '@patternfly/react-core';
 
 export default function ShowPlacements() {
     let [placements, setPlacements] = useState<OcmResource[]>([]);
@@ -17,7 +18,7 @@ export default function ShowPlacements() {
         <section className="component-row">
             { placements.length > 0 &&
                 <>
-                    <h2 style={{ marginTop: '40px' }}>Placements</h2>
+                <Title headingLevel='h2' size='md' style={{ marginTop: '40px' }}>Placements</Title>
                     <VSCodeDataGrid gridTemplateColumns="1fr 1fr 1fr 1fr" aria-label='Placement' >
                         <VSCodeDataGridRow rowType="sticky-header">
                                 <VSCodeDataGridCell cellType='columnheader' gridColumn='1'>Placement Name</VSCodeDataGridCell>

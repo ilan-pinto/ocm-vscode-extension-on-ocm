@@ -1,6 +1,7 @@
 import { VSCodeDataGrid, VSCodeDataGridCell, VSCodeDataGridRow,  } from '@vscode/webview-ui-toolkit/react';
 import { useState, useEffect } from 'react';
 import { OcmResource } from '../../../src/data/loader'
+import { Title } from '@patternfly/react-core';
 
 export default function ShowPlacementDecisions() {
     let [placementDecisions, setPlacementDecisions] = useState<OcmResource[]>([]);
@@ -17,7 +18,7 @@ export default function ShowPlacementDecisions() {
         <section className="component-row">
             { placementDecisions.length > 0 &&
                 <>
-                    <h2 style={{ marginTop: '40px' }}>Placement Decisions</h2>
+                <Title headingLevel='h2' size='md' style={{ marginTop: '40px' }}>Placement Decisions</Title>
                     <VSCodeDataGrid gridTemplateColumns="1fr 1fr 1fr" aria-label='PlacementDecisions' >
                         <VSCodeDataGridRow rowType="sticky-header">
                                 <VSCodeDataGridCell cellType='columnheader' gridColumn='1'>Placement Decision Name</VSCodeDataGridCell>
