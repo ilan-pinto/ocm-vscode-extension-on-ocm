@@ -7,8 +7,8 @@ export default function ShowSelectedContext() {
 
 	useEffect(() => {
         window.addEventListener("message", event => {
-			if ('selectedContext' in event.data) {
-				setSelectedContext(JSON.parse(event.data.selectedContext));
+			if ('selectedContext' in event.data.msg) {
+				setSelectedContext(JSON.parse(event.data.msg.selectedContext));
 			}
 		});
     });

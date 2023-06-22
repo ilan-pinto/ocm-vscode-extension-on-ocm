@@ -8,8 +8,8 @@ export default function ShowPlacements() {
 
 	useEffect(() => {
         window.addEventListener("message", event => {
-			if ('crsDistribution' in event.data && 'Placement' === event.data.crsDistribution.kind) {
-				setPlacements(JSON.parse(event.data.crsDistribution.crs));
+			if ('crsDistribution' in event.data.msg && 'Placement' === event.data.msg.crsDistribution.kind) {
+				setPlacements(JSON.parse(event.data.msg.crsDistribution.crs));
 			}
         });
     });

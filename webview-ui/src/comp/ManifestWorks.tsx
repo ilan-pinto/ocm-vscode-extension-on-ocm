@@ -2,6 +2,8 @@ import { VSCodeButton, VSCodeDataGrid, VSCodeDataGridCell, VSCodeDataGridRow,  }
 import { useState, useEffect } from 'react';
 import { OcmResource } from '../../../src/data/loader'
 import { Title } from '@patternfly/react-core';
+import React from 'react';
+import {Graph, Node, KubeResource } from '../common/Graph';
 
 export default function ShowManifestWorks() {
     let [manifestWorks, setManifestWorks] = useState<OcmResource[]>([]);
@@ -13,22 +15,39 @@ export default function ShowManifestWorks() {
 
 	useEffect(() => {
         window.addEventListener("message", event => {
-            console.log("looking for ManifestWork")
-            console.log(event.data.crsDistribution.kind)
-			if ('crsDistribution' in event.data && 'ManifestWork' === event.data.crsDistribution.kind) {
-				let manifestWorks = JSON.parse(event.data.crsDistribution.crs);
+
+			if ('crsDistribution' in event.data.msg && 'ManifestWork' === event.data.msg.crsDistribution.kind) {
+				let manifestWorks = JSON.parse(event.data.msg.crsDistribution.crs);
 				manifestWorks.forEach((manifestWork: OcmResource) => updateShowMore(manifestWork.name, false));
 				setManifestWorks(manifestWorks);
 			}
         });
     });
 
-    console.log(manifestWorks)
 
+    const manifestWorksResource: Node[] = manifestWorks.map(manifestWork => {
+        const kubeResources: KubeResource[] =  manifestWork.kr.status.resourceStatus.manifests.map( ( mf:any )=> {
+            return mf.resourceMeta
+        })
+        return {    name: manifestWork.kr.metadata.name ,
+                    children: kubeResources 
+            }
+        
+    })
     return (
         <section className="component-row">
+
+            {manifestWorksResource.map( manifestwork => {
+                console.log(manifestwork)
+               return <>
+                 <Graph data={manifestwork}/>
+                </>
+
+            })}
+
             { manifestWorks.length > 0 &&
                 <>
+
                     <Title headingLevel='h2' size='md' style={{ marginTop: '40px' }}>ManifestWorks</Title>
                     <VSCodeDataGrid gridTemplateColumns="1fr 1fr 1fr 1fr 1fr" aria-label='ManifestWorks' >
                         <VSCodeDataGridRow rowType="sticky-header">
@@ -56,7 +75,7 @@ export default function ShowManifestWorks() {
                                             <VSCodeButton onClick={() => updateShowMore(manifestwork.kr.metadata.name, !showMore.get(manifestwork.kr.metadata.name))}> {showMore.get(manifestwork.kr.metadata.name) ? "Less" : "More"} </VSCodeButton>
                                             {showMore.get(manifestwork.kr.metadata.name)
                                                 ?
-                                                    manifestwork.kr.status.resourceStatus.manifests.map( ( mf:any )=> { return<p> - group: {mf.resourceMeta.group}, kind: {mf.resourceMeta.kind}, name: {mf.resourceMeta.name}, namespace: {mf.resourceMeta.namespace}, ordinal: {mf.resourceMeta.ordinal}, resource: {mf.resourceMeta.resource}, version: {mf.resourceMeta.version}
+                                                    manifestwork.kr.status.resourceStatus.manifests.map( ( mf:any )=> {  return<p> - group: {mf.resourceMeta.group}, kind: {mf.resourceMeta.kind}, name: {mf.resourceMeta.name}, namespace: {mf.resourceMeta.namespace}, ordinal: {mf.resourceMeta.ordinal}, resource: {mf.resourceMeta.resource}, version: {mf.resourceMeta.version}
                                                         <ul>{mf.conditions.map( ( cond:any )=> { return<li> lastTransitionTime: {cond.lastTransitionTime}, message: {cond.message}, reason: {cond.reason}, status: {cond.status}, type: {cond.type} </li>  })}</ul>
                                                     </p>  })
                                                 :

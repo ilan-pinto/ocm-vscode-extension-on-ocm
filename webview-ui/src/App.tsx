@@ -24,7 +24,7 @@ export default class App extends React.Component {
 		return (
 		<Page
 			mainContainerId='primary-app-container'
-			header= { <OcmHeader/> } >
+			header= { <OcmHeader /> } >
 			<PageSection style={{ color: "black" }}>
 				<ShowSelectedContext/>
 				<ShowClusterManagers/>

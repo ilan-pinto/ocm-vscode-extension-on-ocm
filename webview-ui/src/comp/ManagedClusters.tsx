@@ -10,8 +10,8 @@ export default function ShowManagedClusters(){
 
 	useEffect(() => {
         window.addEventListener("message", event => {
-			if ('crsDistribution' in event.data && 'ManagedCluster' === event.data.crsDistribution.kind) {
-				setManagedClusters(JSON.parse(event.data.crsDistribution.crs));
+			if ('crsDistribution' in event.data.msg && 'ManagedCluster' === event.data.msg.crsDistribution.kind) {
+				setManagedClusters(JSON.parse(event.data.msg.crsDistribution.crs));
 			}        
             });
         });

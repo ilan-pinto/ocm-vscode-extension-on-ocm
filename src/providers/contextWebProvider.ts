@@ -3,7 +3,6 @@ import * as distributor from '../data/distributor';
 import * as loader from '../data/loader';
 import { Disposable, Uri, ViewColumn, Webview, WebviewPanel, window } from "vscode";
 import { ConnectedContext } from '../data/builder';
-import * as vscode from 'vscode';
 
 
 
@@ -16,7 +15,7 @@ export class ConnectedContextWebProvider {
                 
  
 	// static function used for rendering a web view
-	public static async render(extensionUri: Uri, context: ConnectedContext | undefined , extensionContext:vscode.ExtensionContext ): Promise<void> {
+	public static async render(extensionUri: Uri, context: ConnectedContext | undefined  ): Promise<void> {
 		// get the loader instance
 		let load = loader.Load.getLoader();
 		
@@ -51,11 +50,15 @@ export class ConnectedContextWebProvider {
 			{
 				enableScripts: true,
 				retainContextWhenHidden: true,
+				localResourceRoots: [extensionUri,Uri.joinPath(extensionUri, 'images')]
 			}
 		);
 
+
+  
+
 		// instantiate the provider and set it as the current one for future disposing
-		ConnectedContextWebProvider.currentPanel = new ConnectedContextWebProvider(panel, extensionUri, selectedContext, extensionContext);
+		ConnectedContextWebProvider.currentPanel = new ConnectedContextWebProvider(panel, extensionUri, selectedContext);
 	}
 
 	// collect context from the user
@@ -75,13 +78,20 @@ export class ConnectedContextWebProvider {
 	}
 
 	// generate the html and distribute message for the react module
-	private constructor(panel: WebviewPanel, extensionUri: Uri, selectedContext: ConnectedContext, extensionContext:vscode.ExtensionContext) {
+	private constructor(panel: WebviewPanel, extensionUri: Uri, selectedContext: ConnectedContext) {
 		this.panel = panel;
+
+
+
 		// eslint-disable-next-line @typescript-eslint/unbound-method
 		this.panel.onDidDispose(this.dispose, null, this.disposables);
-		this.panel.webview.html = this.generateHtml(this.panel.webview, extensionUri, extensionContext);
+		this.panel.webview.html = this.generateHtml(this.panel.webview, extensionUri);
+		let ocmLogo = this.panel.webview.asWebviewUri( Uri.joinPath(extensionUri, 'styles', 'ocm.png'));
+
 		
-		distributor.distributeMessages(selectedContext, (msg: any) => this.panel.webview.postMessage(msg));
+		distributor.distributeMessages(selectedContext, (msg: any) => this.panel.webview.postMessage( {	msg:msg , 
+																										images: {ocmLogo:ocmLogo}
+																									}));
 	}
 
 	public dispose():void {
@@ -95,7 +105,7 @@ export class ConnectedContextWebProvider {
 		}
 	}
 
-	private generateHtml(webview: Webview, extensionUri: Uri,context: vscode.ExtensionContext):string {
+	private generateHtml(webview: Webview, extensionUri: Uri):string {
 		// js from the react build output
 		let scriptUri = webview.asWebviewUri(
 			Uri.joinPath(extensionUri, "webview-ui", "build", "static", "js", "main.js"));
@@ -110,6 +120,9 @@ export class ConnectedContextWebProvider {
 			Uri.joinPath(extensionUri,  "styles", "custom.css"));
 		
 		
+		
+		
+		
 		return /*html*/ `
 		<!DOCTYPE html>
 		<html lang="en">
@@ -122,9 +135,11 @@ export class ConnectedContextWebProvider {
 			<title>Context Details</title>
 		</head>
 		<body>
+		
 			<noscript>You need to enable JavaScript to run this app.</noscript>
 			<div id="root"></div>
-			<script src="${scriptUri}">  </script>
+			<script src="${scriptUri}"></script>
+			
 		</body>
 		</html>
 		`;

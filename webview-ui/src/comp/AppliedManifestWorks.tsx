@@ -8,8 +8,8 @@ export default  function ShowAppliedManifestWorks() {
 
 	useEffect(() => {
 		window.addEventListener("message", event => {
-			if ('crsDistribution' in event.data && 'AppliedManifestWork' === event.data.crsDistribution.kind) {
-				setAppliedManifestWorks(JSON.parse(event.data.crsDistribution.crs));
+			if ('crsDistribution' in event.data.msg && 'AppliedManifestWork' === event.data.msg.crsDistribution.kind) {
+				setAppliedManifestWorks(JSON.parse(event.data.msg.crsDistribution.crs));
 			}
         });
     });

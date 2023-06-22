@@ -8,8 +8,8 @@ export default function ShowManagedClusterAddons() {
 
 	useEffect(() => {
         window.addEventListener("message", event => {
-			if ('crsDistribution' in event.data && 'ManagedClusterAddOn' === event.data.crsDistribution.kind) {
-				setManagedClusterAddons(JSON.parse(event.data.crsDistribution.crs));
+			if ('crsDistribution' in event.data.msg && 'ManagedClusterAddOn' === event.data.msg.crsDistribution.kind) {
+				setManagedClusterAddons(JSON.parse(event.data.msg.crsDistribution.crs));
 			}
         });
     });

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { OcmResource } from '../../../src/data/loader'
-import { Card, CardBody, CardHeader, Gallery, GalleryItem, Title } from '@patternfly/react-core';
+import { Gallery, Title } from '@patternfly/react-core';
 import {  DateFormat } from '../common/common';
-import { Table, TableBody, TableHeader } from '@patternfly/react-table';
 import GalleryTableComponent from '../common/ConditionTable';
 
 export default function ShowManagedClusterSets() {
@@ -10,8 +9,8 @@ export default function ShowManagedClusterSets() {
 
 	useEffect(() => {
         window.addEventListener("message", event => {
-			if ('crsDistribution' in event.data && 'ManagedClusterSet' === event.data.crsDistribution.kind) {
-				setManagedClusterSets(JSON.parse(event.data.crsDistribution.crs));
+			if ('crsDistribution' in event.data.msg && 'ManagedClusterSet' === event.data.msg.crsDistribution.kind) {
+				setManagedClusterSets(JSON.parse(event.data.msg.crsDistribution.crs));
 			}
         });
     });

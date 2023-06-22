@@ -8,8 +8,8 @@ export default function ShowKlusterlets() {
 
 	useEffect(() => {
         window.addEventListener("message", event => {
-			if ('crsDistribution' in event.data && 'Klusterlet' === event.data.crsDistribution.kind) {
-				setKlusterlets(JSON.parse(event.data.crsDistribution.crs));
+			if ('crsDistribution' in event.data.msg && 'Klusterlet' === event.data.msg.crsDistribution.kind) {
+				setKlusterlets(JSON.parse(event.data.msg.crsDistribution.crs));
 			}
         });
     });

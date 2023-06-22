@@ -10,8 +10,8 @@ export default function ShowClusterManagers() {
 
 	useEffect(() => {
         window.addEventListener("message", event => {
-			if ('crsDistribution' in event.data && 'ClusterManager' === event.data.crsDistribution.kind) {
-				setClusterManagers(JSON.parse(event.data.crsDistribution.crs));
+			if ('crsDistribution' in event.data.msg && 'ClusterManager' === event.data.msg.crsDistribution.kind) {
+				setClusterManagers(JSON.parse(event.data.msg.crsDistribution.crs));
 			}
 		});
     });

@@ -8,8 +8,8 @@ export default function ShowSubscriptionStatuses() {
 
 	useEffect(() => {
         window.addEventListener("message", event => {
-			if ('crsDistribution' in event.data && 'SubscriptionStatus' === event.data.crsDistribution.kind) {
-				setSubscriptionStatuses(JSON.parse(event.data.crsDistribution.crs));
+			if ('crsDistribution' in event.data.msg && 'SubscriptionStatus' === event.data.msg.crsDistribution.kind) {
+				setSubscriptionStatuses(JSON.parse(event.data.msg.crsDistribution.crs));
 			}
         });
     });
