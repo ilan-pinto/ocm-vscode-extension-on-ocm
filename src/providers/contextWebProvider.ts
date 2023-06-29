@@ -50,12 +50,8 @@ export class ConnectedContextWebProvider {
 			{
 				enableScripts: true,
 				retainContextWhenHidden: true,
-				localResourceRoots: [extensionUri,Uri.joinPath(extensionUri, 'images')]
 			}
 		);
-
-
-  
 
 		// instantiate the provider and set it as the current one for future disposing
 		ConnectedContextWebProvider.currentPanel = new ConnectedContextWebProvider(panel, extensionUri, selectedContext);
@@ -81,17 +77,44 @@ export class ConnectedContextWebProvider {
 	private constructor(panel: WebviewPanel, extensionUri: Uri, selectedContext: ConnectedContext) {
 		this.panel = panel;
 
-
-
 		// eslint-disable-next-line @typescript-eslint/unbound-method
 		this.panel.onDidDispose(this.dispose, null, this.disposables);
 		this.panel.webview.html = this.generateHtml(this.panel.webview, extensionUri);
-		let ocmLogo = this.panel.webview.asWebviewUri( Uri.joinPath(extensionUri, 'styles', 'ocm.png'));
 
+		//add images to postMessage
+		let images: Object[] = []; 
+
+		let ocmLogo = this.panel.webview.asWebviewUri( Uri.joinPath(extensionUri, 'styles', 'ocm.png'));
+		let ocmLogoUri = this.transformToURI(ocmLogo);
+				images.push({
+			name: "ocmLogo",
+			uri: ocmLogoUri
+		});
 		
+		images = this.getKubeResourcesIcons(extensionUri, images);
+
 		distributor.distributeMessages(selectedContext, (msg: any) => this.panel.webview.postMessage( {	msg:msg , 
-																										images: {ocmLogo:ocmLogo}
+																										images: images
 																									}));
+	}
+
+	private transformToURI(uri:Uri): String {
+		return `${uri.scheme}://${uri.authority}${uri.path}`;
+	}
+
+	private getKubeResourcesIcons(extensionUri: Uri, images: Object[]): Object[] {
+
+		//TODO read lib and gen the URI resources 
+		let typeName = "Secret";
+		let imageUri = this.transformToURI( this.panel.webview.asWebviewUri( Uri.joinPath(extensionUri, 'styles','kube-resources','svg','resources', 'labeled','secret.svg')));
+
+		images.push({
+			name: typeName,
+			uri: imageUri
+			}
+		); 
+
+		return images;
 	}
 
 	public dispose():void {

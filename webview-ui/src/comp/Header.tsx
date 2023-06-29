@@ -6,14 +6,16 @@ export default function OcmHeader(){
 
     useEffect(() => {
         window.addEventListener("message", event => {
-            
-			if ('ocmLogo' in event.data.images) {
-                console.log(event.data.images)
-                let uri = `${event.data.images.ocmLogo.scheme}://${event.data.images.ocmLogo.authority}${event.data.images.ocmLogo.path} `
-				setImageUrl(uri);
+			if (event.data.images) {
+                for (const img of event.data.images) {
+                    if (img.name === "ocmLogo") {
+                        setImageUrl(img.uri);
+                        break; // Exit the loop once the object is found
+                    }
+                }
 			}        
-            });
         });
+    });
 
     const LogoImg =  <img src={imageUrl} alt="OCM Logo" />   
     return (

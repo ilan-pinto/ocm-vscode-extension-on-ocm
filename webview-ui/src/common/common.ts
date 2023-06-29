@@ -9,3 +9,7 @@ export const DateFormat: Object = {
     second: '2-digit',
 }  
 
+export type kubeImage = {
+    name: string 
+    uri: string
+}

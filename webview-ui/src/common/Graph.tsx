@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import { Uri } from 'vscode';
 
 export type KubeResource =  {
     group: string //  "apps"
@@ -8,11 +9,13 @@ export type KubeResource =  {
     namespace:  string // "default"
     resource:  string // "deployments"
     version:  string // "v1"
+    icon?: Uri
     node?: Node 
 }
 
 export type Node = {
     name: string,
+    namespace: string, 
     children:KubeResource[] 
 }
 
@@ -24,6 +27,9 @@ export const  Graph: React.FC<GraphProps> = ({ data }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
+    
+
+
     // Set up the D3 graph
     const svg = d3.select(svgRef.current);
     const width = +svg.attr('width')!;
@@ -33,7 +39,7 @@ export const  Graph: React.FC<GraphProps> = ({ data }) => {
     const innerHeight = height - margin.top - margin.bottom;
 
     // Create a D3 tree layout
-    const tree = d3.tree().size([300, 180]);
+    const tree = d3.tree().size([400, 180]);
 
     // Convert the nested JSON object to a hierarchical structure
     const root:any = d3.hierarchy(data);
@@ -53,20 +59,20 @@ export const  Graph: React.FC<GraphProps> = ({ data }) => {
     .attr('r', 4);
   
 
-//     nodes.append('image')
-//   .attr('xlink:href', function(d: any) { return d.data.imageURL; })
-//   .attr('x', -12)
-//   .attr('y', -12)
-//   .attr('width', 24)
-//   .attr('height', 24);
+   nodes.append('image')
+  .attr('xlink:href', function(d: any) { return d.data.icon; })
+  .attr('x', -12)
+  .attr('y', -12)
+  .attr('width', 40)
+  .attr('height', 40);
 
 
     //add text to node 
     nodes
       .append('text')
-      .attr('dy', '1.5em') // Adjust the positioning of the text
+      .attr('dy', '3.3em') // Adjust the positioning of the text
       .attr('text-anchor', 'middle') // Center the text horizontally
-      .text((d: any) => d.data.name);
+      .text((d: any) => `${d.data.group}:${d.data.version}:${d.data.name}`);
 
 
     // Links

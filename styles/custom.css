@@ -3,9 +3,14 @@
   max-width: 25%;
 }
 
+.node text {
+  font-size: 10px;
+  color: black;
+}
+
 .node {
-  fill: steelblue;
-  stroke: none;
+  fill: black;
+  stroke: purple;
 }
 
 .link {
