@@ -33,19 +33,19 @@ export default function ShowManifestWorks() {
 
             // add images 
             //TODO move this logic to graph 
-            kubeImages.forEach( (image: kubeImage)  => 
-            {
+            // kubeImages.forEach( (image: kubeImage)  => 
+            // {
+            //             console.log(mf.resourceMeta)
+            //             if (mf.resourceMeta.kind === image.name) {
+            //                 mf.resourceMeta.icon = image.uri 
+            //                 console.log(mf.resourceMeta)
 
-                        if (mf.resourceMeta.kind === image.name) {
-                            mf.resourceMeta.icon = image.uri 
-                            console.log(mf.resourceMeta)
-
-                            return mf.resourceMeta
+            //                 return mf.resourceMeta
                             
-                        }
-                        return mf.resourceMeta   
-            } 
-            )
+            //             }
+            //             return mf.resourceMeta   
+            // } 
+            // )
             
 
             return mf.resourceMeta
@@ -61,14 +61,14 @@ export default function ShowManifestWorks() {
             <Title headingLevel='h2' size='md' style={{ marginTop: '40px' }}>ManifestWorks</Title>
             <Gallery className='ocm-gallery' hasGutter={true} >
 
-            {manifestWorksResource.map( manifestwork => {              
+            {manifestWorksResource.map( manifestwork => {    
                 return <GalleryItem>
                         <Card>
                             <CardHeader>   
                             <Title headingLevel='h3' size='md'>Cluster Name: {manifestwork.namespace}</Title>                  
                             </CardHeader>
                             <CardBody>
-                                    <Graph data={manifestwork}/>
+                                    <Graph data={manifestwork} images={kubeImages}/>
                             </CardBody>
                             </Card>
                         </GalleryItem>   

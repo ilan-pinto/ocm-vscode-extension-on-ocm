@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import { Uri } from 'vscode';
+import { kubeImage } from './common';
 
 export type KubeResource =  {
     group: string //  "apps"
@@ -9,9 +9,44 @@ export type KubeResource =  {
     namespace:  string // "default"
     resource:  string // "deployments"
     version:  string // "v1"
-    icon?: Uri
+    icon?: string
     node?: Node 
 }
+
+interface ResourceObject {
+  [key: string]: string; // Assuming all fields are of string type
+}
+
+
+const resourceTranslationMap:ResourceObject = {
+  deployment: 'deploy',
+  service: 'svc',
+  pod: 'po',
+  replicationcontroller: 'rc',
+  namespace: 'ns',
+  job: 'job',
+  daemonset: 'ds',
+  statefulset: 'sts',
+  persistentvolume: 'pv',
+  persistentvolumeclaim: 'pvc',
+  configmap: 'cm',
+  secret: 'secret',
+  ingress: 'ing',
+  serviceaccount: 'sa',
+  cronjob: 'cronjob',
+  endpoint: 'ep',
+  limitrange: 'limits',
+  node: 'node',
+  storageclass: 'sc',
+  customresourcedefinition: 'crd',
+  horizontalpodautoscaler: 'hpa',
+  networkpolicy: 'netpol',
+  role: 'role',
+  rolebinding: 'rolebinding',
+  clusterrole: 'clusterrole',
+  clusterrolebinding: 'clusterrolebinding',
+  // Add more translations as needed
+};
 
 export type Node = {
     name: string,
@@ -21,28 +56,43 @@ export type Node = {
 
 interface GraphProps {
   data: Node// Adjust the type based on your nested JSON structure
+  images: kubeImage[]
 }
 
-export const  Graph: React.FC<GraphProps> = ({ data }) => {
+export const  Graph: React.FC<GraphProps> = ({ data ,images }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
-
+  
   useEffect(() => {
     
+    let new_data : Node = { 
+      name: data.name,
+      namespace: data.namespace,     
+      children: data.children.map(mf => { 
+            images.forEach( (image: kubeImage)  => {
+                          console.log('mf.kind.toLowerCase():' +  mf.kind.toLowerCase() )
+                          console.log('image.name.toLowerCase():' +  image.name.toLowerCase() )
+                          let field = mf.kind.toLowerCase() 
+                          let shortKind = resourceTranslationMap[field]
+                          if (shortKind === image.name.toLowerCase()) {
+                                mf.icon = image.uri 
+                                return mf
+                          }
+                            return mf   
+                          })    
+              return mf
+              }) 
+    }
 
+    console.log(new_data)
+    // Set up the D3 graph 
 
-    // Set up the D3 graph
     const svg = d3.select(svgRef.current);
-    const width = +svg.attr('width')!;
-    const height = +svg.attr('height')!;
-    const margin = { top: 40, right: 20, bottom: 40, left: 20 };
-    const innerWidth = width - margin.left - margin.right;
-    const innerHeight = height - margin.top - margin.bottom;
 
     // Create a D3 tree layout
     const tree = d3.tree().size([400, 180]);
 
     // Convert the nested JSON object to a hierarchical structure
-    const root:any = d3.hierarchy(data);
+    const root:any = d3.hierarchy(new_data);
     // Assign positions to the nodes
     tree(root);
 
@@ -61,7 +111,7 @@ export const  Graph: React.FC<GraphProps> = ({ data }) => {
 
    nodes.append('image')
   .attr('xlink:href', function(d: any) { return d.data.icon; })
-  .attr('x', -12)
+  .attr('x', -20)
   .attr('y', -12)
   .attr('width', 40)
   .attr('height', 40);
@@ -72,7 +122,7 @@ export const  Graph: React.FC<GraphProps> = ({ data }) => {
       .append('text')
       .attr('dy', '3.3em') // Adjust the positioning of the text
       .attr('text-anchor', 'middle') // Center the text horizontally
-      .text((d: any) => `${d.data.group}:${d.data.version}:${d.data.name}`);
+      .text((d: any) => `${d.data.name}`);
 
 
     // Links
@@ -92,7 +142,7 @@ export const  Graph: React.FC<GraphProps> = ({ data }) => {
     return () => {
       svg.selectAll('*').remove();
     };
-  }, [data]);
+  }, [data,images]);
 
   return (
     <svg ref={svgRef} width={400} height={220}>       

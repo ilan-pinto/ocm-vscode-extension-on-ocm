@@ -3,6 +3,8 @@ import * as distributor from '../data/distributor';
 import * as loader from '../data/loader';
 import { Disposable, Uri, ViewColumn, Webview, WebviewPanel, window } from "vscode";
 import { ConnectedContext } from '../data/builder';
+import { getKubeImagesFileList } from '../utils/filesystem';
+import path = require('path');
 
 
 
@@ -91,7 +93,9 @@ export class ConnectedContextWebProvider {
 			uri: ocmLogoUri
 		});
 		
-		images = this.getKubeResourcesIcons(extensionUri, images);
+        this.getKubeResourcesIcons(extensionUri, images).then(res => {
+			images = res;			
+		});
 
 		distributor.distributeMessages(selectedContext, (msg: any) => this.panel.webview.postMessage( {	msg:msg , 
 																										images: images
@@ -102,19 +106,14 @@ export class ConnectedContextWebProvider {
 		return `${uri.scheme}://${uri.authority}${uri.path}`;
 	}
 
-	private getKubeResourcesIcons(extensionUri: Uri, images: Object[]): Object[] {
+	private async getKubeResourcesIcons(extensionUri: Uri, images: Object[]): Promise<Object[]> {
 
-		//TODO read lib and gen the URI resources 
-		let typeName = "Secret";
-		let imageUri = this.transformToURI( this.panel.webview.asWebviewUri( Uri.joinPath(extensionUri, 'styles','kube-resources','svg','resources', 'labeled','secret.svg')));
-
-		images.push({
-			name: typeName,
-			uri: imageUri
-			}
-		); 
-
-		return images;
+		let kubeImages = await getKubeImagesFileList(`../../../styles/kube-resources/svg/resources/labeled`);
+		kubeImages.map ( image => { 
+			let imageTmp = this.panel.webview.asWebviewUri( Uri.joinPath(extensionUri, image.uri));
+			image.uri = `${imageTmp.scheme}://${imageTmp.authority}${image.uri}`; 
+		});
+		return [...kubeImages, ...images];
 	}
 
 	public dispose():void {

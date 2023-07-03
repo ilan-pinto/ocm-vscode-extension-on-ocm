@@ -155,11 +155,10 @@
 		],
 		"webview": {
 			"contentSecurityPolicy": "img-src *;"
-		} 
-
+		}
 	},
 	"workspaces": [
-		"webview-ui" 
+		"webview-ui"
 	],
 	"scripts": {
 		"precompile": "npm run clean:build",
