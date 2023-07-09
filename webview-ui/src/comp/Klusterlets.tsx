@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { OcmResource } from '../../../src/data/loader'
 import { ConditionTableComponent } from '../common/ConditionTable';
 import { DateFormat } from '../common/common';
+import { OcmLabels } from '../common/Labels';
 
 export default function ShowKlusterlets() {
     let [klusterlets, setKlusterlets] = useState<OcmResource[]>([]);
@@ -30,7 +31,8 @@ export default function ShowKlusterlets() {
                 <>
                         {klusterlets.map(klusterlet => {
                             return  <>               
-                                    <ConditionTableComponent title={`${klusterlet.kr.metadata.name}` } rows={ row[0]}  /> 
+                                    <ConditionTableComponent id='' title={`${klusterlet.kr.metadata.name}` } rows={ row[0]}  /> 
+                                    {<OcmLabels labels={klusterlet.kr.metadata.labels} /> }
                                     </>
                         } )
                         }

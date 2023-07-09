@@ -14,13 +14,12 @@ export default  function ShowAppliedManifestWorks() {
         });
     });
 
-   const AppliedResourcesColumn:  Object[] = [     
+    const AppliedResourcesColumn:  Object[] = [     
         
         {title: "Resource Name",},
         {title: "Resource"},
         {title: "Group" , }, 
         {title: "Namespace" }
-       
     ]
     return (
         <section className="component-row">
@@ -31,13 +30,15 @@ export default  function ShowAppliedManifestWorks() {
                         {appliedManifestWorks.map(appliedManifestWork => {
                                 const row = appliedManifestWork.kr.status.appliedResources.map( (resource:any) => { 
                                         return [ resource.name, resource.resource, resource.group, resource.namespace]      
-                                        })  
+                                        })
+                                          
                         return  <GalleryTableComponent  
                                         title={`ManifestWork Name: ${appliedManifestWork.kr.spec.manifestWorkName}`}
                                         subtitle={`Creation TimeStamp: ${new Date(appliedManifestWork.kr.metadata.creationTimestamp).toLocaleString("en-US",DateFormat)}`}
                                         rows={row}
                                         cells={AppliedResourcesColumn}
                                         sort={{index: 1, direction:"asc"}}
+                                        id={`${appliedManifestWork.kr.spec.manifestWorkName}`}
                                     />                      
                                     }
                                 )}   

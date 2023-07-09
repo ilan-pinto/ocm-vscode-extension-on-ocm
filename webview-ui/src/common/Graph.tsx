@@ -69,8 +69,6 @@ export const  Graph: React.FC<GraphProps> = ({ data ,images }) => {
       namespace: data.namespace,     
       children: data.children.map(mf => { 
             images.forEach( (image: kubeImage)  => {
-                          console.log('mf.kind.toLowerCase():' +  mf.kind.toLowerCase() )
-                          console.log('image.name.toLowerCase():' +  image.name.toLowerCase() )
                           let field = mf.kind.toLowerCase() 
                           let shortKind = resourceTranslationMap[field]
                           if (shortKind === image.name.toLowerCase()) {
@@ -83,7 +81,6 @@ export const  Graph: React.FC<GraphProps> = ({ data ,images }) => {
               }) 
     }
 
-    console.log(new_data)
     // Set up the D3 graph 
 
     const svg = d3.select(svgRef.current);

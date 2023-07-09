@@ -30,24 +30,6 @@ export default function ShowManifestWorks() {
 
     const manifestWorksResource: Node[] = manifestWorks.map(manifestWork => {
         const kubeResources: KubeResource[] =  manifestWork.kr.status.resourceStatus.manifests.map( ( mf:any )=> {
-
-            // add images 
-            //TODO move this logic to graph 
-            // kubeImages.forEach( (image: kubeImage)  => 
-            // {
-            //             console.log(mf.resourceMeta)
-            //             if (mf.resourceMeta.kind === image.name) {
-            //                 mf.resourceMeta.icon = image.uri 
-            //                 console.log(mf.resourceMeta)
-
-            //                 return mf.resourceMeta
-                            
-            //             }
-            //             return mf.resourceMeta   
-            // } 
-            // )
-            
-
             return mf.resourceMeta
         })
         return {    name: manifestWork.kr.metadata.name ,

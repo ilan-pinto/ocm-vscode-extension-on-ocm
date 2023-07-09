@@ -3,7 +3,6 @@ import ShowSelectedContext from "./comp/SelectedContext";
 import ShowManagedClusters from "./comp/ManagedClusters";
 import ShowManifestWorks from "./comp/ManifestWorks";
 import ShowPlacements from "./comp/Placements";
-import ShowPlacementDecisions from "./comp/PlacementDecisions";
 import ShowManagedClusterSets from "./comp/ManagedClusterSets";
 import ShowManagedClusterAddons from "./comp/ManagedClusterAddons";
 import ShowClusterManagers from "./comp/ClusterManagers";
@@ -32,7 +31,6 @@ export default class App extends React.Component {
 				<ShowManifestWorks/>
 				<ShowSubscriptionReports/>
 				<ShowPlacements/>
-				<ShowPlacementDecisions/>
 				<ShowManagedClusterSets/>
 				<ShowManagedClusterAddons/>
 				<ShowKlusterlets/>

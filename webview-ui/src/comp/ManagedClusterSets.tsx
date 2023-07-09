@@ -35,6 +35,7 @@ export default function ShowManagedClusterSets() {
                         return  <GalleryTableComponent  
                                     title={`ClusterSet Name: ${managedClusterSet.kr.metadata.name}`}
                                     rows={row}
+                                    id={`${managedClusterSet.kr.metadata.name}`}
                                 />  
                         } 
                     )}

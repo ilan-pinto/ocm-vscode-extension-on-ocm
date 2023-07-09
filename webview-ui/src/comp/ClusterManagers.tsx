@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { OcmResource } from '../../../src/data/loader'
-import { PageSection} from '@patternfly/react-core';
+import { PageSection, Panel, PanelMain, PanelMainBody} from '@patternfly/react-core';
 import { DateFormat } from '../common/common';
 import { ConditionTableComponent } from '../common/ConditionTable';
  
@@ -34,10 +34,15 @@ export default function ShowClusterManagers() {
         <PageSection>
         <section className="component-row">
             { clusterManagers.length > 0 &&
-                <>
-                <ConditionTableComponent title={"Cluster Manager"} rows={row[0]}   />
-                <div style={{ borderTop: "1px solid #fff ", marginLeft: 10, marginRight: 10 }}></div>
-                </>
+                
+                <Panel>
+                    <PanelMain>
+                    <PanelMainBody>
+                        <ConditionTableComponent id='' title={"Cluster Manager"} rows={row[0]}   />
+                        <div style={{ borderTop: "1px solid #fff ", marginLeft: 10, marginRight: 10 }}></div>
+                    </PanelMainBody>
+                    </PanelMain>
+                </Panel>
             }
         </section>
         </PageSection>
