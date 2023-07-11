@@ -12,6 +12,7 @@ import ShowAppliedManifestWorks from "./comp/AppliedManifestWorks";
 import ShowSubscriptionStatuses from "./comp/SubscriptionStatuses";
 import OcmHeader from "./comp/Header";
 import { Page, PageSection } from "@patternfly/react-core";
+import ClusterManagerPage from "./parent/clusterManagerParent";
 
 
 
@@ -27,7 +28,7 @@ export default class App extends React.Component {
 			<PageSection style={{ color: "black" }}>
 				<ShowSelectedContext/>
 				<ShowClusterManagers/>
-				<ShowManagedClusters/>
+				<ClusterManagerPage/>
 				<ShowManifestWorks/>
 				<ShowSubscriptionReports/>
 				<ShowPlacements/>

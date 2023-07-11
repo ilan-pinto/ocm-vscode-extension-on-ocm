@@ -10,9 +10,12 @@ export default function ShowManagedClusterAddons() {
         window.addEventListener("message", event => {
 			if ('crsDistribution' in event.data.msg && 'ManagedClusterAddOn' === event.data.msg.crsDistribution.kind) {
 				setManagedClusterAddons(JSON.parse(event.data.msg.crsDistribution.crs));
+                console.log('managedClusterAddons')
+                console.log(managedClusterAddons)
 			}
         });
     });
+
 
     return (
         
@@ -28,6 +31,8 @@ export default function ShowManagedClusterAddons() {
                         </VSCodeDataGridRow>
 
                         {managedClusterAddons.map(managedClusterAddon => {
+                                            console.log('managedClusterAddon')
+                                            console.log(managedClusterAddon)
                             return <VSCodeDataGridRow>
                                         <VSCodeDataGridCell gridColumn='1'>{managedClusterAddon.kr.metadata.name}</VSCodeDataGridCell>
                                         <VSCodeDataGridCell gridColumn='2'>{managedClusterAddon.kr.metadata.namespace} </VSCodeDataGridCell>

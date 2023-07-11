@@ -25,14 +25,15 @@ export default function ShowKlusterlets() {
             })
         })
     return (
-      
+        //TODO-Add panel 
+        //TODO-add clusterlet dashboard 
         <section className="component-row">
             { klusterlets.length > 0 &&
                 <>
                         {klusterlets.map(klusterlet => {
                             return  <>               
                                     <ConditionTableComponent id='' title={`${klusterlet.kr.metadata.name}` } rows={ row[0]}  /> 
-                                    {<OcmLabels labels={klusterlet.kr.metadata.labels} /> }
+                                    {klusterlet.kr.metadata.labels?<OcmLabels labels={klusterlet.kr.metadata.labels} />:null }
                                     </>
                         } )
                         }
