@@ -1,10 +1,8 @@
 import { useState, useEffect} from 'react';
 import { OcmResource } from '../../../src/data/loader'
-import {  Gallery, Title } from '@patternfly/react-core';
-import { DateFormat, kubeImage } from '../common/common';
-import GalleryTableComponent from '../common/ConditionTable';
-import { OcmLabels } from '../common/Labels';
-import ShowSelectedContext from '../comp/SelectedContext';
+import { kubeImage } from '../common/common';
+
+
 import ShowClusterManagers from '../comp/ClusterManagers';
 import ShowManagedClusters from '../comp/ManagedClusters';
 import ShowManifestWorks from '../comp/ManifestWorks';
@@ -12,8 +10,7 @@ import ShowSubscriptionReports from '../comp/SubscriptionReports';
 import ShowPlacements from '../comp/Placements';
 import ShowManagedClusterSets from '../comp/ManagedClusterSets';
 import ShowManagedClusterAddons from '../comp/ManagedClusterAddons';
-import { ConnectedContext } from '../../../src/data/builder';
- 
+import ClusterManagerDashboard,{ClusterManagerData} from '../comp/ClusterManagerDashboard';
 
 export default function ClusterManagerPage(){
     let [clusterManagers, setClusterManagers] = useState<OcmResource[]>([]);
@@ -22,23 +19,21 @@ export default function ClusterManagerPage(){
     let [managedClusterSets, setManagedClusterSets] = useState<OcmResource[]>([]);
     let [placements, setPlacements] = useState<OcmResource[]>([]);
     let [kubeImages, setKubeImages] = useState<kubeImage[]>([]);
-    let [selectedContext, setSelectedContext] = useState<ConnectedContext>();
+    let [subscriptionReports, setSubscriptionReports] = useState<OcmResource[]>([]);
+    let [clusterManagersData, setClusterManagersData] = useState<ClusterManagerData>(Object());
 
     useEffect(() => {
         window.addEventListener("message", event => {
             if (event.data.images) { 
                 //TODO move this logic to Graph 
-                setKubeImages(event.data.images)
+                setKubeImages(event.data.images)                
             }
-
-            if ('selectedContext' in event.data.msg) {
-				setSelectedContext(JSON.parse(event.data.msg.selectedContext));
-			}
 
             if ('crsDistribution' in event.data.msg) { 
                 switch (event.data.msg.crsDistribution.kind) {                
                     case 'ClusterManager':
                         setClusterManagers(JSON.parse(event.data.msg.crsDistribution.crs));
+
                         break;
                     case 'ManagedCluster':
                         setManagedClusters(JSON.parse(event.data.msg.crsDistribution.crs));
@@ -48,27 +43,38 @@ export default function ClusterManagerPage(){
                         break;    
                     case 'ManifestWork':
                         let manifestWorks = JSON.parse(event.data.msg.crsDistribution.crs);
-                        setManifestWorks(manifestWorks);
+                        setManifestWorks(manifestWorks);                        
                         break;
                     case 'Placement':
-                        setPlacements(JSON.parse(event.data.msg.crsDistribution.crs));
+                        setPlacements(JSON.parse(event.data.msg.crsDistribution.crs));                       
                         break;    
+                    case 'SubscriptionReport':
+                        setSubscriptionReports(JSON.parse(event.data.msg.crsDistribution.crs));                     
+                        break;       
                 }
             }
+
+            clusterManagersData.clusterManagers = clusterManagers
+            clusterManagersData.managedClusters = managedClusters
+            clusterManagersData.placements = placements
+            clusterManagersData.manifestWorks = manifestWorks
+            clusterManagersData.managedClusterSets = managedClusterSets
+            clusterManagersData.subscriptionReports = subscriptionReports
+            clusterManagersData.kubeImages = kubeImages
+            setClusterManagersData(clusterManagersData)
 		});
     });
 
     return (<>
-       		    <ShowSelectedContext/>
-				<ShowClusterManagers/>
+				<ClusterManagerDashboard data={clusterManagersData}/>
+                <ShowClusterManagers clusterManagers={clusterManagers} />
 				<ShowManagedClusters managedClusters={managedClusters} />
-				<ShowManifestWorks/>
-				<ShowSubscriptionReports/>
-				<ShowPlacements/>
-				<ShowManagedClusterSets/>
+				<ShowManifestWorks manifestWorks={manifestWorks} kubeImages={kubeImages}/>
+				<ShowSubscriptionReports subscriptionReports={subscriptionReports}  kubeImages={kubeImages}/>
+				<ShowPlacements placements={placements}/>
+				<ShowManagedClusterSets managedClusterSets={managedClusterSets}/>
 				<ShowManagedClusterAddons/>
     </>
-
     )
 
 }

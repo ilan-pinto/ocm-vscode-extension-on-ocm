@@ -63,7 +63,8 @@ export const  Graph: React.FC<GraphProps> = ({ data ,images }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
   
   useEffect(() => {
-    
+    console.log(`data`)
+    console.log(data)
     let new_data : Node = { 
       name: data.name,
       namespace: data.namespace,     
@@ -80,6 +81,8 @@ export const  Graph: React.FC<GraphProps> = ({ data ,images }) => {
               return mf
               }) 
     }
+
+    console.log(new_data)
 
     // Set up the D3 graph 
 

@@ -5,20 +5,17 @@ import { DateFormat } from '../common/common';
 import { ConditionTableComponent } from '../common/ConditionTable';
  
 
-export default function ShowClusterManagers() {
-    let [clusterManagers, setClusterManagers] = useState<OcmResource[]>([]);
+type clusterManagerProps = {
+    clusterManagers: OcmResource[]
+}
 
-	useEffect(() => {
-        window.addEventListener("message", event => {
-			if ('crsDistribution' in event.data.msg && 'ClusterManager' === event.data.msg.crsDistribution.kind) {
-				setClusterManagers(JSON.parse(event.data.msg.crsDistribution.crs));
-			}
-		});
-    });
+export default function ShowClusterManagers( Props: clusterManagerProps) {
 
 
 
-    const row = clusterManagers.map(clusterManager => {            
+
+
+    const row = Props.clusterManagers.map(clusterManager => {            
         return clusterManager.kr.status.conditions.map( (condition:any) => { 
             return [new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
                     condition.message,
@@ -33,7 +30,7 @@ export default function ShowClusterManagers() {
         
         <PageSection>
         <section className="component-row">
-            { clusterManagers.length > 0 &&
+            { Props.clusterManagers.length > 0 &&
                 
                 <Panel>
                     <PanelMain>

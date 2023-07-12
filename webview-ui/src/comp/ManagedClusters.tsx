@@ -1,17 +1,17 @@
-import { useState, useEffect} from 'react';
 import { OcmResource } from '../../../src/data/loader'
 import {  Gallery, Title } from '@patternfly/react-core';
 import { DateFormat } from '../common/common';
 import GalleryTableComponent from '../common/ConditionTable';
 import { OcmLabels } from '../common/Labels';
+import { useEffect } from 'react';
  
 
 type ManagedClusterProps = {
     managedClusters: OcmResource[]
-
 }
 
 export default function ShowManagedClusters(Props: ManagedClusterProps ){
+    
 
     return (
         

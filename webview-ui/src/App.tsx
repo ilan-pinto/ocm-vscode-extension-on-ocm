@@ -1,12 +1,6 @@
 import React from "react";
 import ShowSelectedContext from "./comp/SelectedContext";
-import ShowManagedClusters from "./comp/ManagedClusters";
-import ShowManifestWorks from "./comp/ManifestWorks";
-import ShowPlacements from "./comp/Placements";
-import ShowManagedClusterSets from "./comp/ManagedClusterSets";
 import ShowManagedClusterAddons from "./comp/ManagedClusterAddons";
-import ShowClusterManagers from "./comp/ClusterManagers";
-import ShowSubscriptionReports from "./comp/SubscriptionReports";
 import ShowKlusterlets from "./comp/Klusterlets";
 import ShowAppliedManifestWorks from "./comp/AppliedManifestWorks";
 import ShowSubscriptionStatuses from "./comp/SubscriptionStatuses";
@@ -27,13 +21,9 @@ export default class App extends React.Component {
 			header= { <OcmHeader /> } >
 			<PageSection style={{ color: "black" }}>
 				<ShowSelectedContext/>
-				<ShowClusterManagers/>
-				<ClusterManagerPage/>
-				<ShowManifestWorks/>
-				<ShowSubscriptionReports/>
-				<ShowPlacements/>
-				<ShowManagedClusterSets/>
+				<ClusterManagerPage/>				
 				<ShowManagedClusterAddons/>
+
 				<ShowKlusterlets/>
 				<ShowAppliedManifestWorks/>
 				<ShowSubscriptionStatuses/>	

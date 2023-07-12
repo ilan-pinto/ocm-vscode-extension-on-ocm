@@ -4,31 +4,18 @@ import { Card, CardBody, CardHeader, Gallery, GalleryItem, Title } from '@patter
 import {Graph, Node, KubeResource } from '../common/Graph';
 import { kubeImage } from '../common/common';
 
-export default function ShowManifestWorks() {
-    let [manifestWorks, setManifestWorks] = useState<OcmResource[]>([]);
-    let [showMore, setShowMore] = useState<Map<any, boolean>>(new Map());
-    let [kubeImages, setKubeImages] = useState<kubeImage[]>([]);
-
-	const updateShowMore = (k: any, v: boolean) => {
-        setShowMore(new Map(showMore.set(k, v)));
-    }
-
-	useEffect(() => {
-        window.addEventListener("message", event => {
-
-			if ('crsDistribution' in event.data.msg && 'ManifestWork' === event.data.msg.crsDistribution.kind) {
-                //TODO move this logic to Graph 
-                setKubeImages(event.data.images)
-
-				let manifestWorks = JSON.parse(event.data.msg.crsDistribution.crs);
-				manifestWorks.forEach((manifestWork: OcmResource) => updateShowMore(manifestWork.name, false));
-				setManifestWorks(manifestWorks);
-			}
-        });
-    });
+type manifestWorksProps = {
+    manifestWorks: OcmResource[] , 
+    kubeImages: kubeImage[]
+}
 
 
-    const manifestWorksResource: Node[] = manifestWorks.map(manifestWork => {
+
+export default function ShowManifestWorks( Props: manifestWorksProps ) {
+    useEffect(() => {
+    },[Props,Props.manifestWorks,Props.kubeImages])
+
+    const manifestWorksResource: Node[] = Props.manifestWorks.map(manifestWork => {
         const kubeResources: KubeResource[] =  manifestWork.kr.status.resourceStatus.manifests.map( ( mf:any )=> {
             return mf.resourceMeta
         })
@@ -38,8 +25,10 @@ export default function ShowManifestWorks() {
             }
         
     })
+
     return (
         <section className="component-row">
+            
             <Title headingLevel='h2' size='md' style={{ marginTop: '40px' }}>ManifestWorks</Title>
             <Gallery className='ocm-gallery' hasGutter={true} >
 
@@ -50,7 +39,7 @@ export default function ShowManifestWorks() {
                             <Title headingLevel='h3' size='md'>Cluster Name: {manifestwork.namespace}</Title>                  
                             </CardHeader>
                             <CardBody>
-                                    <Graph data={manifestwork} images={kubeImages}/>
+                                    <Graph data={manifestwork} images={Props.kubeImages}/>
                             </CardBody>
                             </Card>
                         </GalleryItem>   

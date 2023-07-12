@@ -1,7 +1,7 @@
 import { VSCodeDataGrid, VSCodeDataGridCell, VSCodeDataGridRow,  } from '@vscode/webview-ui-toolkit/react';
 import { useState, useEffect } from 'react';
 import { OcmResource } from '../../../src/data/loader'
-import { PageSection, Title } from '@patternfly/react-core';
+import { Title } from '@patternfly/react-core';
 
 export default function ShowManagedClusterAddons() {
     let [managedClusterAddons, setManagedClusterAddons] = useState<OcmResource[]>([]);
@@ -10,8 +10,7 @@ export default function ShowManagedClusterAddons() {
         window.addEventListener("message", event => {
 			if ('crsDistribution' in event.data.msg && 'ManagedClusterAddOn' === event.data.msg.crsDistribution.kind) {
 				setManagedClusterAddons(JSON.parse(event.data.msg.crsDistribution.crs));
-                console.log('managedClusterAddons')
-                console.log(managedClusterAddons)
+
 			}
         });
     });
@@ -31,8 +30,7 @@ export default function ShowManagedClusterAddons() {
                         </VSCodeDataGridRow>
 
                         {managedClusterAddons.map(managedClusterAddon => {
-                                            console.log('managedClusterAddon')
-                                            console.log(managedClusterAddon)
+
                             return <VSCodeDataGridRow>
                                         <VSCodeDataGridCell gridColumn='1'>{managedClusterAddon.kr.metadata.name}</VSCodeDataGridCell>
                                         <VSCodeDataGridCell gridColumn='2'>{managedClusterAddon.kr.metadata.namespace} </VSCodeDataGridCell>
