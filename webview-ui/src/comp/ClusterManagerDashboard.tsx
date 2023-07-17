@@ -1,7 +1,6 @@
 import { Panel, PanelMain, PanelMainBody } from "@patternfly/react-core"
 import { OcmResource } from "../../../src/data/loader"
 import { kubeImage } from "../common/common"
-import { useEffect } from "react"
 
 
 export type ClusterManagerData = {
@@ -20,10 +19,6 @@ type ClusterManagerDashboardProps = {
 }
 
 export default function ClusterManagerDashboard( Props: ClusterManagerDashboardProps) {
-
-    useEffect(() => {
-        // Perform any necessary actions when clusterManagersData changes
-        }, [Props, Props.data,Props.data.clusterManagers,Props.data.managedClusters, Props.data.placements, Props.data.managedClusterSets  ]);
 
     return(  
         <Panel>

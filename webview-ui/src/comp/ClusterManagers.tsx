@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { OcmResource } from '../../../src/data/loader'
 import { PageSection, Panel, PanelMain, PanelMainBody} from '@patternfly/react-core';
 import { DateFormat } from '../common/common';
@@ -11,10 +10,6 @@ type clusterManagerProps = {
 
 export default function ShowClusterManagers( Props: clusterManagerProps) {
 
-
-
-
-
     const row = Props.clusterManagers.map(clusterManager => {            
         return clusterManager.kr.status.conditions.map( (condition:any) => { 
             return [new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
@@ -25,13 +20,10 @@ export default function ShowClusterManagers( Props: clusterManagerProps) {
             })
         })
             
-
     return (
-        
         <PageSection>
         <section className="component-row">
             { Props.clusterManagers.length > 0 &&
-                
                 <Panel>
                     <PanelMain>
                     <PanelMainBody>

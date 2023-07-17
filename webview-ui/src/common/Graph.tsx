@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React,  { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { kubeImage } from './common';
 
@@ -16,7 +16,6 @@ export type KubeResource =  {
 interface ResourceObject {
   [key: string]: string; // Assuming all fields are of string type
 }
-
 
 const resourceTranslationMap:ResourceObject = {
   deployment: 'deploy',
@@ -61,10 +60,8 @@ interface GraphProps {
 
 export const  Graph: React.FC<GraphProps> = ({ data ,images }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
-  
+
   useEffect(() => {
-    console.log(`data`)
-    console.log(data)
     let new_data : Node = { 
       name: data.name,
       namespace: data.namespace,     
@@ -82,7 +79,6 @@ export const  Graph: React.FC<GraphProps> = ({ data ,images }) => {
               }) 
     }
 
-    console.log(new_data)
 
     // Set up the D3 graph 
 
@@ -96,9 +92,8 @@ export const  Graph: React.FC<GraphProps> = ({ data ,images }) => {
     // Assign positions to the nodes
     tree(root);
 
-    
     // Nodes
-    const nodes = d3.select('svg g.nodes')
+    const nodes = d3.select(`svg g.nodes-${data.name}`)
     .selectAll('circle.node')
     .data(root.descendants())
     .join('g')
@@ -108,14 +103,12 @@ export const  Graph: React.FC<GraphProps> = ({ data ,images }) => {
     nodes.append('circle')
     .attr('r', 4);
   
-
-   nodes.append('image')
-  .attr('xlink:href', function(d: any) { return d.data.icon; })
-  .attr('x', -20)
-  .attr('y', -12)
-  .attr('width', 40)
-  .attr('height', 40);
-
+    nodes.append('image')
+    .attr('xlink:href', function(d: any) { return d.data.icon; })
+    .attr('x', -20)
+    .attr('y', -12)
+    .attr('width', 40)
+    .attr('height', 40);
 
     //add text to node 
     nodes
@@ -124,9 +117,8 @@ export const  Graph: React.FC<GraphProps> = ({ data ,images }) => {
       .attr('text-anchor', 'middle') // Center the text horizontally
       .text((d: any) => `${d.data.name}`);
 
-
     // Links
-    d3.select('svg g.links')
+    d3.select(`svg g.links-${data.name}`)
     .selectAll('line.link')
     .data(root.links())
     .join('line')
@@ -136,24 +128,25 @@ export const  Graph: React.FC<GraphProps> = ({ data ,images }) => {
     .attr('x2', function(d: any) {return d.target.x;})
     .attr('y2', function(d: any) {return d.target.y;});
 
-
-
     // Clean up on unmount
     return () => {
-      svg.selectAll('*').remove();
+        svg.selectAll(`[id=${data.name}]`).remove();
     };
-  }, [data,images]);
+  });
 
-  return (
-    <svg ref={svgRef} width={400} height={220}>       
-        <g transform="translate(5, 5)">
-        <g className="links"></g>
-        <g className="nodes"></g>
-        </g>
-  </svg>
-
-   
-  );
-};
+  if (svgRef.current == null) {
+      return (
+        <svg id={data.name} ref={svgRef} width={400} height={220}>       
+            <g transform="translate(5, 5)">
+            <g className={`links-${data.name}`}></g>
+            <g className={`nodes-${data.name}`}></g>
+            </g>
+      </svg>
+      );
+    }
+    else { 
+      return <></>
+    }
+}
 
 export default Graph;

@@ -2,7 +2,6 @@ import { OcmResource } from '../../../src/data/loader'
 import { Gallery,GalleryItem,Card,CardHeader, Title,CardBody } from '@patternfly/react-core';
 import Graph from '../common/Graph';
 import { kubeImage } from '../common/common';
-import { useEffect } from 'react';
 
 
 type SubscriptionReportsProps = {
@@ -10,10 +9,7 @@ type SubscriptionReportsProps = {
     kubeImages: kubeImage[]
 }
 
-
 export default function ShowSubscriptionReports(Props: SubscriptionReportsProps) {
-    useEffect(() => {
-    },[Props,Props.subscriptionReports,Props.kubeImages])
 
     return (
         <section className="component-row">
