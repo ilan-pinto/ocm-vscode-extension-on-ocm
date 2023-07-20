@@ -32,7 +32,6 @@ const GalleryTableComponent: React.FC<GalleryComponentProps> = ({id, title, subt
                         setExpanded(id);
                         }
                     };
-
             return (
                 <GalleryItem>
                 <Card>
@@ -43,12 +42,12 @@ const GalleryTableComponent: React.FC<GalleryComponentProps> = ({id, title, subt
                                         
                     </CardHeader>
                     <CardBody>
+                    {children}   
                     {code ? <CodeBlock> 
                                 <CodeBlockCode>{code}</CodeBlockCode>
                             </CodeBlock> 
                             : null 
                     }
-
                                 <Accordion> 
                                     <AccordionItem>
                                         <AccordionToggle  onClick={() => {
@@ -67,7 +66,6 @@ const GalleryTableComponent: React.FC<GalleryComponentProps> = ({id, title, subt
                     </AccordionItem>
                     </Accordion> 
                                     
-                    {children}
                     </CardBody>
                 </Card>
                 </GalleryItem>

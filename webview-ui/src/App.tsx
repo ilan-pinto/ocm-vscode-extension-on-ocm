@@ -22,7 +22,6 @@ export default class App extends React.Component {
 			<PageSection style={{ color: "black" }}>
 				<ShowSelectedContext/>
 				<ClusterManagerPage/>				
-				<ShowManagedClusterAddons/>
 
 				<ShowKlusterlets/>
 				<ShowAppliedManifestWorks/>

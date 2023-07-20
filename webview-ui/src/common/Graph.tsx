@@ -41,9 +41,9 @@ const resourceTranslationMap:ResourceObject = {
   horizontalpodautoscaler: 'hpa',
   networkpolicy: 'netpol',
   role: 'role',
-  rolebinding: 'rolebinding',
-  clusterrole: 'clusterrole',
-  clusterrolebinding: 'clusterrolebinding',
+  rolebinding: 'rb',
+  clusterrole: 'c-role',
+  clusterrolebinding: 'crb',
   // Add more translations as needed
 };
 
@@ -111,8 +111,10 @@ export const  Graph: React.FC<GraphProps> = ({ data ,images }) => {
     .attr('height', 40);
 
     //add text to node 
+    
+  
     nodes
-      .append('text')
+      .append('text')   
       .attr('dy', '3.3em') // Adjust the positioning of the text
       .attr('text-anchor', 'middle') // Center the text horizontally
       .text((d: any) => `${d.data.name}`);

@@ -9,7 +9,7 @@ import ShowManifestWorks from '../comp/ManifestWorks';
 import ShowSubscriptionReports from '../comp/SubscriptionReports';
 import ShowPlacements from '../comp/Placements';
 import ShowManagedClusterSets from '../comp/ManagedClusterSets';
-// import ShowManagedClusterAddons from '../comp/ManagedClusterAddons';
+import ShowManagedClusterAddons from '../comp/ManagedClusterAddons';
 import ClusterManagerDashboard,{ClusterManagerData} from '../comp/ClusterManagerDashboard';
 import { Spinner } from '@patternfly/react-core';
 
@@ -26,7 +26,7 @@ export default function ClusterManagerPage(){
     let kubeImagesRef = useRef<kubeImage[]>([]);
     let subscriptionReportsRef = useRef<OcmResource[]>([]);
     let clusterManagersDataRef = useRef<ClusterManagerData>(Object());
-
+    let managedClusterAddOnRef = useRef<OcmResource[]>([]);
 
     useEffect(() => {
         dataRequests.current += 1
@@ -63,7 +63,12 @@ export default function ClusterManagerPage(){
                         if (subscriptionReportsRef.current !== crsData.length) {
                             subscriptionReportsRef.current = crsData;                     
                         }
-                        break;       
+                        break;
+                    case 'ManagedClusterAddOn' :
+                        if (managedClusterAddOnRef.current !== crsData.length) {
+                            managedClusterAddOnRef.current = crsData;                     
+                        }
+                        break;           
                 }
 
                 if (event.data.images) { 
@@ -98,6 +103,7 @@ export default function ClusterManagerPage(){
                         <ShowSubscriptionReports subscriptionReports={subscriptionReportsRef.current}  kubeImages={kubeImagesRef.current}/>
                         <ShowPlacements placements={placementsRef.current}/>
                         <ShowManagedClusterSets managedClusterSets={managedClusterSetsRef.current}/>
+                        <ShowManagedClusterAddons managedClusterAddons={managedClusterAddOnRef.current}/>
             </>
             )
         }
