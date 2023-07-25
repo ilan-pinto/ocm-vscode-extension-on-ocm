@@ -1,21 +1,17 @@
-import { useState, useEffect } from 'react';
 import { OcmResource } from '../../../src/data/loader'
 import { ConditionTableComponent } from '../common/ConditionTable';
 import { DateFormat } from '../common/common';
 import { OcmLabels } from '../common/Labels';
 
-export default function ShowKlusterlets() {
-    let [klusterlets, setKlusterlets] = useState<OcmResource[]>([]);
+type klusterletProps = {
+    klusterlet: OcmResource[]
+}
 
-	useEffect(() => {
-        window.addEventListener("message", event => {
-			if ('crsDistribution' in event.data.msg && 'Klusterlet' === event.data.msg.crsDistribution.kind) {
-				setKlusterlets(JSON.parse(event.data.msg.crsDistribution.crs));
-			}
-        });
-    });
+export default function ShowKlusterlet(Props: klusterletProps) {
 
-    const row = klusterlets.map(klusterlet => {            
+
+
+    const row = Props.klusterlet.map(klusterlet => {            
         return klusterlet.kr.status.conditions.map( (condition:any) => { 
             return [new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
                     condition.message,
@@ -26,11 +22,11 @@ export default function ShowKlusterlets() {
         })
     return (
         //TODO-Add panel 
-        //TODO-add clusterlet dashboard 
+        //TODO-add Klusterlet dashboard 
         <section className="component-row">
-            { klusterlets.length > 0 &&
+            { Props.klusterlet.length > 0 &&
                 <>
-                        {klusterlets.map(klusterlet => {
+                        {Props.klusterlet.map(klusterlet => {
                             return  <>               
                                     <ConditionTableComponent id='' title={`${klusterlet.kr.metadata.name}` } rows={ row[0]}  /> 
                                     {klusterlet.kr.metadata.labels?<OcmLabels labels={klusterlet.kr.metadata.labels} />:null }

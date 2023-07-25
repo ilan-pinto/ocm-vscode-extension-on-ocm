@@ -29,14 +29,19 @@ export default function ShowSubscriptionReports(Props: SubscriptionReportsProps)
                     <Gallery className='ocm-gallery' hasGutter={true} >
 
                     {Props.subscriptionReports.map( subscriptionReport => { 
-                            const rows = [[subscriptionReport.kr.summary.clusters,
-                                            subscriptionReport.kr.summary.deployed,
-                                            subscriptionReport.kr.summary.failed,
-                                            subscriptionReport.kr.summary.inProgress,
-                                            subscriptionReport.kr.summary.propagationFailed
-                                        ]]
-                                        
-                            console.log(rows)
+                            console.log(`subscriptionReport`)
+                            console.log(subscriptionReport)
+
+                            let rows = [[0,0,0,0,0]]
+
+                            if (subscriptionReport.kr.summary && subscriptionReport.kr.summary.clusters > -1 ) {
+                                rows = [[subscriptionReport.kr.summary.clusters,
+                                                subscriptionReport.kr.summary.deployed,
+                                                subscriptionReport.kr.summary.failed,
+                                                subscriptionReport.kr.summary.inProgress,
+                                                subscriptionReport.kr.summary.propagationFailed
+                                            ]]
+                            }                             
 
                             return <GalleryItem>
                                     <Card>
@@ -45,21 +50,19 @@ export default function ShowSubscriptionReports(Props: SubscriptionReportsProps)
                                         <Title headingLevel='h3' size='md'>Namespace: {subscriptionReport.kr.metadata.namespace?subscriptionReport.kr.metadata.namespace:'missing namespace'}</Title>                   
                                         </CardHeader>
                                         <CardBody>
+                                            
                                             <p> Report Type:  {subscriptionReport.kr.reportType}</p>
+                                            {/*TODO add placement name and chanel */}
                                                 <Graph data={{  name: subscriptionReport.kr.metadata.name,
                                                                 namespace: subscriptionReport.kr.metadata.namespace?subscriptionReport.kr.metadata.namespace:'missing namespace',
-                                                                children:  subscriptionReport.kr.resources
+                                                                children:  subscriptionReport.kr.resources?subscriptionReport.kr.resources:[]
                                                 } } images={Props.kubeImages}/>
                                             <div style={{ borderTop: "1px solid #fff ", marginLeft: 10, marginRight: 10 }}></div>
                                             <Table gridBreakPoint= 'grid-md'  rows={rows} cells={SubscriptionReportsSummeryColumns} >
                                             <TableHeader/>
                                             <TableBody />   
                                             </Table>
-
                                         </CardBody>
-
-                                        
-
                                     </Card>
                                     </GalleryItem>   
                                     })}
