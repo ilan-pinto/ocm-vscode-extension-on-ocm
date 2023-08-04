@@ -7,13 +7,13 @@ type SubscriptionStatusesProps ={
     subscription: OcmResource[],
 } 
 
-const SubscriptionStatusesColumns: Object[] = [     
-    {title: "kind" ,}, 
-    {title: "LastUpdateTime",  },
-    {title: "Name" },
-    {title: "Namespace" },
-    {title: "PropagationFailed" }
-]
+const SubscriptionStatusesColumns =      
+    {kind: "kind" , 
+    lastUpdateTime: "Last Update Time",  
+    name: "Name", 
+    namespace: "Namespace" ,
+    propagationFailed: "Propagation Failed" }
+
 
 export default function ShowSubscriptionStatuses(Props: SubscriptionStatusesProps) {
 
@@ -28,12 +28,15 @@ export default function ShowSubscriptionStatuses(Props: SubscriptionStatusesProp
                     console.log(subscriptionStatus)
                     return <GalleryTableComponent
                         title={`Subscription Name: ${subscriptionStatus.name}`}
-                        rows={subscriptionStatus.kr.statuses.packages.map( ( pkg:any )=> {return [  pkg.kind,
-                                                                                                    pkg.lastUpdateTime,
-                                                                                                    pkg.name,
-                                                                                                    pkg.namespace,
-                                                                                                    pkg.phase
-                                                                                                ]} 
+            rows={subscriptionStatus.kr.statuses.packages.map( ( pkg:any )=> {
+                console.log("pkg")
+                console.log(pkg)
+                return   { kind: pkg.kind,
+                                                                                        lastUpdateTime:pkg.lastUpdateTime,
+                                                                                        name: pkg.name,
+                                                                                        namespace: pkg.namespace,
+                                                                                        phase: pkg.phase}
+                                                                                                } 
                         ) }
                         cells={SubscriptionStatusesColumns}
                         id={`${subscriptionStatus.kr.metadata.name}`}

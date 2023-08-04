@@ -18,12 +18,11 @@ export default function ShowManagedClusterAddons(Props: ManagedClusterAddonsProp
                     {Props.managedClusterAddons.map(managedClusterAddon => {
 
                                 const row = managedClusterAddon.kr.status.conditions.map( (condition:any) => { 
-                                    return [new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
-                                            condition.message,
-                                            condition.reason,
-                                            condition.status
-                                        ]      
-                                    })
+                                    return {time: new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
+                                    message: condition.message,
+                                    reason: condition.reason,
+                                    status: condition.status}
+                            })
                                 return  <GalleryTableComponent  
                                             title={`Name: ${managedClusterAddon.kr.metadata.name}`}
                                             rows={row}

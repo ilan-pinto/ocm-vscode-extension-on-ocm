@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GalleryItem, Card, CardHeader, Title, CardBody, CodeBlock, CodeBlockCode, Accordion, AccordionItem, AccordionToggle, AccordionContent } from '@patternfly/react-core';
-import { Table, TableHeader, TableBody, IRow, ICell, ISortBy } from '@patternfly/react-table';
+import { Table,  IRow, ICell, ISortBy, Thead, Tr,Th ,Tbody, Td } from '@patternfly/react-table'; //TableHeader, TableBody,
 
 
 type GalleryComponentProps = {
@@ -8,21 +8,23 @@ type GalleryComponentProps = {
     title: string;
     subtitle?: string;
     rows: (IRow | string[])[]
-    cells?: (ICell | string)[] 
+    cells?: Object
     code?: string; 
     sort?: ISortBy;
     children?: React.ReactNode; 
     
 };
 
-const DefaultConditionColumns: Object[] = [     
-    {title:"Last Transition Time" , }, 
-    {title: "Message" ,  },
-    {title: "Reason" },
-    {title:"Status"   }
-]
 
-const GalleryTableComponent: React.FC<GalleryComponentProps> = ({id, title, subtitle='', rows , cells = DefaultConditionColumns , sort = {index: 1, direction:"asc"}, code, children }) => {
+const defaultColumnNames = {
+    time: 'Last Transition Time',
+    message: 'Message',
+    reason: 'Reason',
+    status: 'Status',
+   
+  };
+
+const GalleryTableComponent: React.FC<GalleryComponentProps> = ({id, title, subtitle='', rows , cells = defaultColumnNames , sort = {index: 1, direction:"asc"}, code, children }) => {
             const [expanded, setExpanded] =  useState('');  
             
             const onToggle = (id: string) => {
@@ -58,9 +60,27 @@ const GalleryTableComponent: React.FC<GalleryComponentProps> = ({id, title, subt
                                             Condition table 
                                         </AccordionToggle>
                                         <AccordionContent id={`cond-${id}`} isHidden={expanded !== `cond-table-${id}`}>
-                                            <Table gridBreakPoint="grid-md" rows={rows} cells={cells} sortBy={sort}>
-                                                <TableHeader />
-                                                <TableBody className="managed-clusters-table" />
+                                            <Table>
+                                                        <Thead>
+                                                            <Tr>
+                                                                <Th>{defaultColumnNames.time}</Th>
+                                                                <Th>{defaultColumnNames.reason}</Th>
+                                                                <Th>{defaultColumnNames.status}</Th>
+                                                                <Th>{defaultColumnNames.message}</Th>
+                                                            </Tr>
+                                                            </Thead>
+                                                <Tbody className="managed-clusters-table"> 
+                                                {rows.map( (row:any) => {
+                                                  
+                                                    return <Tr>
+                                                            <Td dataLabel={defaultColumnNames.time}>{row.time}</Td>
+                                                            <Td dataLabel={defaultColumnNames.reason}>{row.reason}</Td>
+                                                            <Td dataLabel={defaultColumnNames.status}>{row.status}</Td>
+                                                            <Td dataLabel={defaultColumnNames.message}>{row.message}</Td>
+                                                        </Tr>
+                                                    }
+                                                )}
+                                                </Tbody>
                                             </Table>
                         </AccordionContent>   
                     </AccordionItem>
@@ -72,14 +92,31 @@ const GalleryTableComponent: React.FC<GalleryComponentProps> = ({id, title, subt
             );
             };
 
-export const ConditionTableComponent: React.FC<GalleryComponentProps> = ({ id='', title, subtitle='', rows, cells = DefaultConditionColumns , sort = {index: 1, direction:"asc"} }) => {
+export const ConditionTableComponent: React.FC<GalleryComponentProps> = ({ id='', title, subtitle='', rows, cells = defaultColumnNames , sort = {index: 1, direction:"asc"} }) => {
     return (
         <>
         <Title headingLevel="h2" size="md" style={{ marginTop: '40px' }}>{title}</Title>
         <Title headingLevel="h2" size="md">{subtitle}</Title>
-        <Table gridBreakPoint= 'grid-md'  rows={rows} cells={cells} sortBy={sort} >
-        <TableHeader/>
-        <TableBody />   
+        <Table>
+                <Thead>
+                    <Tr>
+                        <Th>{defaultColumnNames.time}</Th>
+                        <Th>{defaultColumnNames.reason}</Th>
+                        <Th>{defaultColumnNames.status}</Th>
+                        <Th>{defaultColumnNames.message}</Th>
+                    </Tr>
+                    </Thead>
+        <Tbody className="managed-clusters-table"> 
+        {rows.map( (row:any) => { 
+            console.log(row)
+            return  <Tr>
+            <Td dataLabel={defaultColumnNames.time}>{row.time}</Td>
+            <Td dataLabel={defaultColumnNames.reason}>{row.reason}</Td>
+            <Td dataLabel={defaultColumnNames.status}>{row.status}</Td>
+            <Td dataLabel={defaultColumnNames.message}>{row.message}</Td>
+            </Tr>
+})}
+        </Tbody>
         </Table>
         </>
     );

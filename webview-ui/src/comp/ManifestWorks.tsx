@@ -2,6 +2,8 @@ import { OcmResource } from '../../../src/data/loader'
 import { Card, CardBody, CardHeader, Gallery, GalleryItem, Title } from '@patternfly/react-core';
 import {Graph, Node, KubeResource } from '../common/Graph';
 import { kubeImage } from '../common/common';
+import { Topology } from '../common/Topology';
+import { NodeShape, NodeStatus } from '@patternfly/react-topology';
 
 type manifestWorksProps = {
     manifestWorks: OcmResource[] , 
@@ -35,7 +37,26 @@ export default function ShowManifestWorks( Props: manifestWorksProps ) {
                             <Title headingLevel='h3' size='md'>Name: {manifestwork.name}</Title>                
                             </CardHeader>
                             <CardBody>
-                                    <Graph data={manifestwork} images={Props.kubeImages}/>
+                                    {/* <Graph data={manifestwork} images={Props.kubeImages}/> */}
+
+                                    <Topology nodes={manifestwork.children.map((res) => {                                    
+                                            return {                                                 
+                                                    id: res.name,
+                                                    type: 'node',
+                                                    label: res.name, 
+                                                    width: 75,
+                                                    height: 75,
+                                                    shape:  NodeShape.ellipse,                                                
+                                                    data: {
+                                                        badge: 'B',
+                                                        isAlternate: false
+                                                      }, 
+
+
+                                                }
+                                            } 
+                                    )} 
+                                /> 
                             </CardBody>
                             </Card>
                         </GalleryItem>   

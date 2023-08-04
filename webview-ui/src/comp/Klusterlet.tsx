@@ -13,11 +13,10 @@ export default function ShowKlusterlet(Props: klusterletProps) {
 
     const row = Props.klusterlet.map(klusterlet => {            
         return klusterlet.kr.status.conditions.map( (condition:any) => { 
-            return [new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
-                    condition.message,
-                    condition.reason,
-                    condition.status
-                ]      
+            return {time: new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
+                    message: condition.message,
+                    reason: condition.reason,
+                    status: condition.status}    
             })
         })
     return (

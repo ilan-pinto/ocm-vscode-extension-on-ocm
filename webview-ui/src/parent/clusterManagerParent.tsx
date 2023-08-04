@@ -94,7 +94,7 @@ export default function ClusterManagerPage(){
         clusterManagersDataRef.current = newClusterManagersData
     },[kubeImages]);
 
-    if(dataRequests.current > 35 ){    
+    if(dataRequests.current > 30 ){    
             return (<> 
                         <ClusterManagerDashboard data={clusterManagersDataRef.current}/> 
                         <ShowClusterManagers clusterManagers={clusterManagersRef.current} />
@@ -112,7 +112,7 @@ export default function ClusterManagerPage(){
             return <></>
     }
     else {
-        return ( <Spinner isSVG size='xl'/>       
+        return ( <Spinner size='xl'/>       
         )
     }
     

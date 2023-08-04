@@ -12,11 +12,11 @@ export default function ShowClusterManagers( Props: clusterManagerProps) {
 
     const row = Props.clusterManagers.map(clusterManager => {            
         return clusterManager.kr.status.conditions.map( (condition:any) => { 
-            return [new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
-                    condition.message,
-                    condition.reason,
-                    condition.status
-                ]      
+            return {time: new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
+            message: condition.message,
+            reason: condition.reason,
+            status: condition.status}
+          
             })
         })
             

@@ -71,7 +71,7 @@ export default function ManagedClusterPage(){
 
 
     else {
-        return ( <Spinner isSVG size='xl'/>       
+        return ( <Spinner size='xl'/>       
         )
     }
     

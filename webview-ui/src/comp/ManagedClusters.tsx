@@ -19,11 +19,10 @@ export default function ShowManagedClusters(Props: ManagedClusterProps ){
                 <Gallery className='ocm-gallery' hasGutter={true} >
                 {Props.managedClusters.map(managedCluster => {
                         const row = managedCluster.kr.status.conditions.map( (condition:any) => { 
-                                return [new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
-                                        condition.message,
-                                        condition.reason,
-                                        condition.status
-                                    ]      
+                                return {time: new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
+                                        message: condition.message,
+                                        reason: condition.reason,
+                                        status: condition.status}
                                 })                            
                 return  <>
                 <GalleryTableComponent  

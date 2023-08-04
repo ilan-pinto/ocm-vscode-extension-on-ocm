@@ -39,11 +39,10 @@ export default function ShowPlacements(Props: placementsProps ) {
                             const codeJson = placement.kr.spec 
                             const code =yaml.dump(codeJson);
                             const row = placement.kr.status.conditions.map( (condition:any) => { 
-                                return [new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
-                                        condition.message,
-                                        condition.reason,
-                                        condition.status
-                                    ]      
+                                return {time: new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
+                                        message: condition.message,
+                                        reason: condition.reason,
+                                        status: condition.status}    
                                 })  
                             const placementName =  placement.kr.metadata.name;    
                             const labels = placement.kr.metadata.labels? <OcmLabels labels={placement.kr.metadata.labels} />:null     

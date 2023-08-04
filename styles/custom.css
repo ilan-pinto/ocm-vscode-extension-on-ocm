@@ -1,7 +1,13 @@
 
-.logo img{
-  max-width: 25%;
+.pf-v5-c-brand {
+  --pf-v5-c-brand--Width: 25% !important;
+  --pf-v5-c-brand--Height: 25% !important;
 }
+
+.logo img{
+  max-width: 25% !important;
+}
+
 
 .node text {
   font-size: 10px;
@@ -29,5 +35,5 @@
 }
 
 .ocm-gallery{
-  --pf-l-gallery--GridTemplateColumns--min: 450px !important; 
+  --pf-v5-l-gallery--GridTemplateColumns--min: 450px !important; 
 }

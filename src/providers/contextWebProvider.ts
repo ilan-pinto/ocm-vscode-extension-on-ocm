@@ -134,16 +134,30 @@ export class ConnectedContextWebProvider {
 		// PatternFly css  
 		let cssUri = webview.asWebviewUri(
 			Uri.joinPath(extensionUri, "node_modules", "@patternfly", "patternfly", "patternfly.css"));
+		
+		let patternflyAddOnCssUri = webview.asWebviewUri(
+			Uri.joinPath(extensionUri, "node_modules", "@patternfly", "patternfly", "patternfly-addons.css"));
 
-		let reactCoreUri = webview.asWebviewUri(
+		// PatternFly topology css  
+		let topologyComponentsUri = webview.asWebviewUri(
+			Uri.joinPath(extensionUri, "node_modules", "@patternfly","react-topology", "dist", "esm" , "css", "topology-components.css"));
+		let topologyControlbarUri = webview.asWebviewUri(
+			Uri.joinPath(extensionUri, "node_modules", "@patternfly","react-topology", "dist", "esm" , "css", "topology-controlbar.css"));
+
+		let topologySidebarUri = webview.asWebviewUri(
+			Uri.joinPath(extensionUri, "node_modules", "@patternfly","react-topology", "dist", "esm" , "css", "topology-side-bar.css"));
+
+		let topologyViewUri = webview.asWebviewUri(
+			Uri.joinPath(extensionUri, "node_modules", "@patternfly","react-topology", "dist", "esm" , "css", "topology-view.css"));
+
+		let topologyPipelineUri = webview.asWebviewUri(
+			Uri.joinPath(extensionUri, "node_modules", "@patternfly","react-topology", "dist", "esm" , "css", "topology-pipelines.css"));
+		
+		let reactBaseCssUri = webview.asWebviewUri(
 			Uri.joinPath(extensionUri,  "node_modules", "@patternfly", "react-core", "dist" , "styles" ,"base.css"));
 		
 		let customCssUri = webview.asWebviewUri(
 			Uri.joinPath(extensionUri,  "styles", "custom.css"));
-		
-		
-		
-		
 		
 		return /*html*/ `
 		<!DOCTYPE html>
@@ -153,7 +167,15 @@ export class ConnectedContextWebProvider {
 			<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
 			<meta name="theme-color" content="#000000">
 			<link rel="stylesheet" href="${cssUri}">
-			<link rel="stylesheet" href="${customCssUri}">
+			<link rel="stylesheet" href="${customCssUri}">			
+			<link rel="stylesheet" href="${patternflyAddOnCssUri}">
+			<link rel="stylesheet" href="${reactBaseCssUri}">
+			
+			<link rel="stylesheet" href="${topologyComponentsUri}">
+			<link rel="stylesheet" href="${topologyControlbarUri}">
+			<link rel="stylesheet" href="${topologyViewUri}">
+			<link rel="stylesheet" href="${topologySidebarUri}">
+			<link rel="stylesheet" href="${topologyPipelineUri}">
 			<title>Context Details</title>
 		</head>
 		<body>

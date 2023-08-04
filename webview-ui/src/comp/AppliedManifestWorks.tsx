@@ -13,12 +13,12 @@ type AppliedManifestWorksProps = {
 export default  function ShowAppliedManifestWorks(Props:AppliedManifestWorksProps) {
 
 
-    const AppliedResourcesColumn:  Object[] = [    
-        {title: "Resource Name",},
-        {title: "Resource"},
-        {title: "Group" , }, 
-        {title: "Namespace" }
-    ]
+    const AppliedResourcesColumn =    
+        {resourceName: "Resource Name",
+        resourc: "Resource",
+        group: "Group" ,  
+        namespace: "Namespace" }
+    
     return (
         <section className="component-row">
             { Props.appliedManifestWorks.length > 0 &&
@@ -30,7 +30,11 @@ export default  function ShowAppliedManifestWorks(Props:AppliedManifestWorksProp
                                 console.log(`appliedManifestWork`)
                                 console.log(appliedManifestWork)
                                 const row = appliedManifestWork.kr.status.appliedResources.map( (resource:any) => { 
-                                        return [ resource.name, resource.resource, resource.group, resource.namespace]      
+                                        return  {   name: resource.name,
+                                                    resource: resource.resource,
+                                                    group: resource.group,
+                                                    namespace: resource.namespace
+                                            }     
                                         })
 
                         return  <GalleryTableComponent  

@@ -23,11 +23,10 @@ export default function ShowManagedClusterSets(Props: managedClusterSetsProps) {
                     {Props.managedClusterSets.map(managedClusterSet => {
                         const code = yaml.dump(managedClusterSet.kr.spec.clusterSelector)
                         const row = managedClusterSet.kr.status.conditions.map( (condition:any) => { 
-                            return [new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
-                                    condition.message,
-                                    condition.reason,
-                                    condition.status
-                                ]      
+                            return {time: new Date(condition.lastTransitionTime).toLocaleString("en-US",DateFormat),
+                            message: condition.message,
+                            reason: condition.reason,
+                            status: condition.status}     
                             })
                         return  <GalleryTableComponent  
                                     title={`ClusterSet Name: ${managedClusterSet.kr.metadata.name}`}

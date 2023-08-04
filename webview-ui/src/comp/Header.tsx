@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PageHeader } from '@patternfly/react-core';
+import { Brand, Masthead, MastheadBrand, MastheadMain } from '@patternfly/react-core';
 
 export default function OcmHeader(){
     let [imageUrl, setImageUrl] = useState<string>('');
@@ -17,9 +17,17 @@ export default function OcmHeader(){
         });
     });
 
-    const LogoImg =  <img src={imageUrl} alt="OCM Logo" />   
+   
     return (
-        <PageHeader className="logo" logo={LogoImg} />
+        // <PageHeader className="logo" logo={LogoImg} />
+        <Masthead>
+        <MastheadMain>
+            <MastheadBrand>
+            <Brand src={imageUrl} alt="OCM Logo" className="logo"/>
+            </MastheadBrand>
+        </MastheadMain>
+
+        </Masthead>
     );
     
 }
