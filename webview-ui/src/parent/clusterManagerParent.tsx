@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef, createContext, useContext} from 'react';
 import { OcmResource } from '../../../src/data/loader'
 import { kubeImage } from '../common/common';
 
@@ -12,6 +12,7 @@ import ShowManagedClusterSets from '../comp/ManagedClusterSets';
 import ShowManagedClusterAddons from '../comp/ManagedClusterAddons';
 import ClusterManagerDashboard,{ClusterManagerData} from '../comp/ClusterManagerDashboard';
 import { Spinner } from '@patternfly/react-core';
+
 
 export default function ClusterManagerPage(){
     let [kubeImages, setKubeImages] = useState<kubeImage[]>([]);
@@ -117,3 +118,10 @@ export default function ClusterManagerPage(){
     }
     
 }
+
+// Custom hook to access the context
+const useGlobalContext = () => {
+    return useContext(GlobalContext);
+  };
+  
+  export { GlobalProvider, useGlobalContext };

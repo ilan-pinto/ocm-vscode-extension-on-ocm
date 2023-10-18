@@ -27,8 +27,7 @@ export default  function ShowAppliedManifestWorks(Props:AppliedManifestWorksProp
                     <Title headingLevel='h2' size='md' style={{ marginTop: '40px' }}>Applied ManifestWorks</Title>
                     <Gallery className='ocm-gallery' hasGutter={true} >
                         {Props.appliedManifestWorks.map(appliedManifestWork => {
-                                console.log(`appliedManifestWork`)
-                                console.log(appliedManifestWork)
+
                                 const row = appliedManifestWork.kr.status.appliedResources.map( (resource:any) => { 
                                         return  {   name: resource.name,
                                                     resource: resource.resource,

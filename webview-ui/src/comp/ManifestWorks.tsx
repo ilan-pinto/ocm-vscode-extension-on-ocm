@@ -3,13 +3,18 @@ import { Card, CardBody, CardHeader, Gallery, GalleryItem, Title } from '@patter
 import {Graph, Node, KubeResource } from '../common/Graph';
 import { kubeImage } from '../common/common';
 import { Topology } from '../common/Topology';
-import { NodeShape, NodeStatus } from '@patternfly/react-topology';
+import { NodeModel, NodeShape, NodeStatus } from '@patternfly/react-topology';
+import { namespace } from 'd3';
 
 type manifestWorksProps = {
     manifestWorks: OcmResource[] , 
     kubeImages: kubeImage[]
 }
 
+type namespaceGroup = {
+    namespace: string 
+    childrens: string[]
+}
 
 
 export default function ShowManifestWorks( Props: manifestWorksProps ) {
@@ -25,37 +30,77 @@ export default function ShowManifestWorks( Props: manifestWorksProps ) {
             }
         
     })
+
+    // const nodes: NodeModel[] = Props.manifestWorks.map(manifestWork => { 
+
+    //     return manifestWork.kr.status.resourceStatus.manifests.map( ( mf:any )=> { 
+           
+    //         return { 
+    //                 id: mf.resourceMeta.name,
+    //                 type: 'node',
+    //                 label: mf.resourceMeta.name, 
+    //                 shape:  NodeShape.ellipse,   
+    //                 width: 75,
+    //                 height: 75,                                             
+    //                 data: {
+    //                     kind: mf.resourceMeta.kind,
+    //                     namespace: manifestWork.kr.metadata.namespace,
+    //                     name: manifestWork.kr.metadata.name,
+    //                     isAlternate: false,
+    //                     badge: 'B',
+    //                     conditions: mf.resourceMeta.conditions
+    //                 }
+    //             }
+    //         })
+    //     })
+    //     console.log(`nodes`)
+    //     console.log(nodes)
+        // {
+        //     id: 'Group-1',
+        //     children: ['node-0', 'node-1', 'node-2'],
+        //     type: 'group',
+        //     group: true,
+        //     label: 'Group-1',
+        //     style: {
+        //       padding: 40
+        //     }
+        
+    
+
+
+
     return (
         <section className="component-row">
             <Title headingLevel='h2' size='md' style={{ marginTop: '40px' }}>ManifestWorks</Title>
             <Gallery className='ocm-gallery' hasGutter={true} >
-            {manifestWorksResource.map( manifestwork => {   
+            {Props.manifestWorks.map( manifestwork => {   
                 return <GalleryItem>
                         <Card>
                             <CardHeader>   
-                            <Title headingLevel='h3' size='md'>Cluster Name: {manifestwork.namespace}</Title>   
-                            <Title headingLevel='h3' size='md'>Name: {manifestwork.name}</Title>                
+                            <Title headingLevel='h3' size='md'>Cluster Name: {manifestwork.kr.metadata.name }</Title>   
+                            <Title headingLevel='h3' size='md'>Name: { manifestwork.kr.metadata.namespace}</Title>                
                             </CardHeader>
                             <CardBody>
                                     {/* <Graph data={manifestwork} images={Props.kubeImages}/> */}
 
-                                    <Topology nodes={manifestwork.children.map((res) => {                                    
-                                            return {                                                 
-                                                    id: res.name,
-                                                    type: 'node',
-                                                    label: res.name, 
-                                                    width: 75,
-                                                    height: 75,
-                                                    shape:  NodeShape.ellipse,                                                
-                                                    data: {
-                                                        badge: 'B',
-                                                        isAlternate: false
-                                                      }, 
-
-
-                                                }
-                                            } 
-                                    )} 
+                                    <Topology images={Props.kubeImages} nodes={manifestwork.kr.status.resourceStatus.manifests.map( ( mf:any )=> { 
+                                                                            return { 
+                                                                                    id: mf.resourceMeta.name,
+                                                                                    type: 'node',
+                                                                                    label: mf.resourceMeta.name, 
+                                                                                    shape:  NodeShape.ellipse,   
+                                                                                    width: 75,
+                                                                                    height: 75,                                             
+                                                                                    data: {
+                                                                                        kind: mf.resourceMeta.kind,
+                                                                                        namespace: manifestwork.kr.metadata.namespace,
+                                                                                        name: manifestwork.kr.metadata.name,
+                                                                                        isAlternate: false,
+                                                                                        badge: 'B',
+                                                                                        conditions: mf.resourceMeta.conditions
+                                                                                    }
+                                                                                }
+                                                                            })} 
                                 /> 
                             </CardBody>
                             </Card>

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { kubeImage, resourceTranslationMap } from './common';
+
 
 import {
   ColaLayout,
@@ -26,6 +28,7 @@ import {
 
 import { RegionsIcon as Icon1 } from '@patternfly/react-icons';
 import { FolderOpenIcon as Icon2 } from '@patternfly/react-icons';
+import { Icon } from '@patternfly/react-core';
 
 const BadgeColors = [
   {
@@ -43,13 +46,18 @@ const BadgeColors = [
 ];
 
 interface CustomNodeProps {
-  element: GraphElement
+  element: GraphElement,
+  kubeImages?: kubeImage[]
+
 }
 
 
 const CustomNode: React.FC<CustomNodeProps> = ({ element }) => {
+
   const data = element.getData();
-  const Icon = data.isAlternate ? Icon2 : Icon1;
+  let imageUrl: kubeImage | undefined = { name: "tt", uri: "ttt" }
+
+
   const badgeColors = BadgeColors.find(badgeColor => badgeColor.name === data.badge);
 
   return (
@@ -62,7 +70,7 @@ const CustomNode: React.FC<CustomNodeProps> = ({ element }) => {
       badgeBorderColor={badgeColors?.badgeBorderColor}
     >
       <g transform={`translate(25, 25)`}>
-        <Icon style={{ color: '#393F44' }} width={25} height={25} />
+        <image  width={25} height={25} href={imageUrl?.uri} />
       </g>
     </DefaultNode>
   );
@@ -98,13 +106,16 @@ const baselineLayoutFactory: LayoutFactory = (type: string, graph: Graph): Layou
 
 
 type TopologyProps = { 
-  nodes: NodeModel[]
+  nodes: NodeModel[], 
+  images: kubeImage[]
 }
 
 
   export const Topology: React.FC<TopologyProps> = (Props:TopologyProps) => {
     const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
+    const [kubeImages, setKubeImages] = React.useState<kubeImage[]>([]);
 
+    setKubeImages(Props.images)
 
     const controller = React.useMemo(() => {
       const model: Model = {

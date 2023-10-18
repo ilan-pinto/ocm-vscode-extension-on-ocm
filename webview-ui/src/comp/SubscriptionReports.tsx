@@ -40,8 +40,7 @@ export default function ShowSubscriptionReports(Props: SubscriptionReportsProps)
                     <Gallery className='ocm-gallery' hasGutter={true} >
 
                     {Props.subscriptionReports.map( subscriptionReport => { 
-                            console.log(`subscriptionReport`)
-                            console.log(subscriptionReport)
+
 
                             let rows = {        clusters: 0,
                                                 deployed:0,

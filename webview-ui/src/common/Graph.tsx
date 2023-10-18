@@ -1,6 +1,6 @@
 import React,  { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import { kubeImage } from './common';
+import { kubeImage, resourceTranslationMap } from './common';
 
 export type KubeResource =  {
     group: string //  "apps"
@@ -16,36 +16,6 @@ export type KubeResource =  {
 interface ResourceObject {
   [key: string]: string; // Assuming all fields are of string type
 }
-
-const resourceTranslationMap:ResourceObject = {
-  deployment: 'deploy',
-  service: 'svc',
-  pod: 'po',
-  replicationcontroller: 'rc',
-  namespace: 'ns',
-  job: 'job',
-  daemonset: 'ds',
-  statefulset: 'sts',
-  persistentvolume: 'pv',
-  persistentvolumeclaim: 'pvc',
-  configmap: 'cm',
-  secret: 'secret',
-  ingress: 'ing',
-  serviceaccount: 'sa',  
-  cronjob: 'cronjob',
-  endpoint: 'ep',
-  limitrange: 'limits',
-  node: 'node',
-  storageclass: 'sc',
-  customresourcedefinition: 'crd',
-  horizontalpodautoscaler: 'hpa',
-  networkpolicy: 'netpol',
-  role: 'role',
-  rolebinding: 'rb',
-  clusterrole: 'c-role',
-  clusterrolebinding: 'crb',
-  // Add more translations as needed
-};
 
 export type Node = {
     name: string,

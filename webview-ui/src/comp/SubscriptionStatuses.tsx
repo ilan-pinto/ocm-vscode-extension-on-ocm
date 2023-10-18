@@ -24,13 +24,11 @@ export default function ShowSubscriptionStatuses(Props: SubscriptionStatusesProp
                     <Title headingLevel='h2' size='md' style={{ marginTop: '40px' }}>Subscription Status</Title>
                     <Gallery className='ocm-gallery' hasGutter={true} >
                     {Props.subscriptionStatuses.map(subscriptionStatus => {
-                    console.log(`subscriptionStatus`)
-                    console.log(subscriptionStatus)
+
                     return <GalleryTableComponent
                         title={`Subscription Name: ${subscriptionStatus.name}`}
             rows={subscriptionStatus.kr.statuses.packages.map( ( pkg:any )=> {
-                console.log("pkg")
-                console.log(pkg)
+
                 return   { kind: pkg.kind,
                                                                                         lastUpdateTime:pkg.lastUpdateTime,
                                                                                         name: pkg.name,

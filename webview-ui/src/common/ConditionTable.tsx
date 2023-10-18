@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GalleryItem, Card, CardHeader, Title, CardBody, CodeBlock, CodeBlockCode, Accordion, AccordionItem, AccordionToggle, AccordionContent } from '@patternfly/react-core';
-import { Table,  IRow, ICell, ISortBy, Thead, Tr,Th ,Tbody, Td } from '@patternfly/react-table'; //TableHeader, TableBody,
+import { Table,  IRow, ISortBy, Thead, Tr,Th ,Tbody, Td } from '@patternfly/react-table'; //TableHeader, TableBody,
 
 
 type GalleryComponentProps = {
@@ -71,7 +71,6 @@ const GalleryTableComponent: React.FC<GalleryComponentProps> = ({id, title, subt
                                                             </Thead>
                                                 <Tbody className="managed-clusters-table"> 
                                                 {rows.map( (row:any) => {
-                                                  
                                                     return <Tr>
                                                             <Td dataLabel={defaultColumnNames.time}>{row.time}</Td>
                                                             <Td dataLabel={defaultColumnNames.reason}>{row.reason}</Td>
@@ -108,7 +107,7 @@ export const ConditionTableComponent: React.FC<GalleryComponentProps> = ({ id=''
                     </Thead>
         <Tbody className="managed-clusters-table"> 
         {rows.map( (row:any) => { 
-            console.log(row)
+         
             return  <Tr>
             <Td dataLabel={defaultColumnNames.time}>{row.time}</Td>
             <Td dataLabel={defaultColumnNames.reason}>{row.reason}</Td>
